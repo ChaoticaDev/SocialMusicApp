@@ -1,0 +1,179 @@
+-- MySQL Administrator dump 1.4
+--
+-- ------------------------------------------------------
+-- Server version	5.5.45-cll-lve
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+--
+-- Create schema io_socialapp
+--
+
+CREATE DATABASE IF NOT EXISTS io_socialapp;
+USE io_socialapp;
+
+--
+-- Definition of table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE `categories` (
+  `cat_name` varchar(45) NOT NULL,
+  PRIMARY KEY (`cat_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `categories`
+--
+
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` (`cat_name`) VALUES 
+ ('Business'),
+ ('Hip-Hop Music'),
+ ('Politics'),
+ ('Pop Music'),
+ ('Popular Music');
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+
+
+--
+-- Definition of table `follows`
+--
+
+DROP TABLE IF EXISTS `follows`;
+CREATE TABLE `follows` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned NOT NULL,
+  `follower_id` int(10) unsigned NOT NULL,
+  `friendship_established_on` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `follows`
+--
+
+/*!40000 ALTER TABLE `follows` DISABLE KEYS */;
+INSERT INTO `follows` (`ID`,`uid`,`follower_id`,`friendship_established_on`) VALUES 
+ (1,1,2,'2016-03-15 21:09:34'),
+ (2,2,1,'2016-03-15 21:09:34'),
+ (3,3,1,'2016-03-15 21:09:34'),
+ (4,4,1,'2016-03-15 21:09:34');
+/*!40000 ALTER TABLE `follows` ENABLE KEYS */;
+
+
+--
+-- Definition of table `likes`
+--
+
+DROP TABLE IF EXISTS `likes`;
+CREATE TABLE `likes` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned NOT NULL DEFAULT '0',
+  `snippet_id` int(10) unsigned NOT NULL,
+  `like_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `likes`
+--
+
+/*!40000 ALTER TABLE `likes` DISABLE KEYS */;
+INSERT INTO `likes` (`ID`,`uid`,`snippet_id`,`like_timestamp`) VALUES 
+ (3,1,1,'2016-03-15 20:48:41');
+/*!40000 ALTER TABLE `likes` ENABLE KEYS */;
+
+
+--
+-- Definition of table `snippets`
+--
+
+DROP TABLE IF EXISTS `snippets`;
+CREATE TABLE `snippets` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned NOT NULL,
+  `title` varchar(45) NOT NULL,
+  `description` varchar(150) NOT NULL,
+  `filename` varchar(255) NOT NULL,
+  `album` varchar(255) NOT NULL,
+  `cover` varchar(255) NOT NULL DEFAULT 'https://ubersnip.com/ubersnip.jpg',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `snippets`
+--
+
+/*!40000 ALTER TABLE `snippets` DISABLE KEYS */;
+INSERT INTO `snippets` (`ID`,`uid`,`title`,`description`,`filename`,`album`,`cover`) VALUES 
+ (1,1,'Heartbeat','Jules M. Heartbeat','','UberSnip Featured','https://ubersnip.com//thumb.php?src=256676423_713478081_438351567.jpg&t=m&w=112&h=112');
+/*!40000 ALTER TABLE `snippets` ENABLE KEYS */;
+
+
+--
+-- Definition of table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `uid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(25) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `users`
+--
+
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` (`uid`,`username`,`password`) VALUES 
+ (1,'montraydavis','montraydavis'),
+ (2,'montraydavis2','montraydavis2');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+
+
+--
+-- Definition of table `views`
+--
+
+DROP TABLE IF EXISTS `views`;
+CREATE TABLE `views` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(10) unsigned NOT NULL DEFAULT '0',
+  `snippet_id` int(10) unsigned NOT NULL,
+  `view_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `views`
+--
+
+/*!40000 ALTER TABLE `views` DISABLE KEYS */;
+INSERT INTO `views` (`ID`,`uid`,`snippet_id`,`view_timestamp`) VALUES 
+ (1,1,1,'2016-03-15 20:47:01'),
+ (2,1,1,'2016-03-15 20:47:33'),
+ (3,1,1,'2016-03-15 20:51:57');
+/*!40000 ALTER TABLE `views` ENABLE KEYS */;
+
+
+
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

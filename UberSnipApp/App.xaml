@@ -1,0 +1,10 @@
+﻿<Application
+    x:Class="UberSnipApp.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UberSnipApp"
+    RequestedTheme="Light">
+    
+    
+
+</Application>

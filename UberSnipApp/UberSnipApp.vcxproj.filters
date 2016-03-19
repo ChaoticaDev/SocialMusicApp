@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>cbeba660-1038-4e8b-9700-7e1b741e4691</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>824d47f5-bb68-4faa-a923-e4b016749bcf</UniqueIdentifier>
+      <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="App.xaml.cpp" />
+    <ClCompile Include="MainPage.xaml.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="cJSON\cJSON.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="App.xaml.h" />
+    <ClInclude Include="MainPage.xaml.h" />
+    <ClInclude Include="KeenIOSDK_CLIENT.h" />
+    <ClInclude Include="cJSON\cJSON.h" />
+    <ClInclude Include="PlatformStringUtils.h" />
+    <ClInclude Include="APP_SETTINGS.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\jules_mthumb.jpg">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\playbtn_ubr.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\refreshbtn_ubr.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\prevbtn_ubr.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\pausebtn_ubr.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\nextbtn_ubr.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\audiombtn_ubr.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\audiogbtn_ubr.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\fa-heartbeat.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\fa-heart.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\fa-heart-white.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\person.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\person_red.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\person_yellow.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UberSnipApp_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainPage.xaml" />
+  </ItemGroup>
+</Project>
