@@ -16,4 +16,4 @@ This social network / music store is geared towards those wanting to learn how t
 
 > Simple theme
 
-![UberSnip](http://api.ubersnip.com/ubs-app0.0.1.PNG?)
+![UberSnip](http://api.ubersnip.com/ubs-app-0.0.4.gif?)
