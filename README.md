@@ -19,3 +19,6 @@ This social network / music store is geared towards those wanting to learn how t
 > Simple theme
 
 ![UberSnip](http://api.ubersnip.com/ubs-app-0.0.4.gif)
+
+
+To setup the application to work on your own server, view the wiki: [`Getting Started`](https://github.com/UberSnip/SocialMusicApp/wiki/Getting-started.) 
