@@ -8,6 +8,8 @@ This social network / music store is geared towards those wanting to learn how t
 
 > API Integration (C++)
 
+>> Login Manager
+
 >> Load track-list
 
 >> Load category-list
