@@ -27,9 +27,12 @@ namespace UberSnipApp
 	private:
 		Platform::String^ _username;
 		Platform::String^ _password;
-
+		Platform::String^ _LoggedInAs;
+		Platform::String^ _UID = "0";
+		Platform::String^ _token;
 		bool loggedIn = false;
 	public:
+
 
 		property Platform::String^ Username {
 			Platform::String^ get() {
@@ -53,6 +56,12 @@ namespace UberSnipApp
 
 			if (err < 0) {
 				this->loggedIn = true;
+				this->LoggedInAs = username;
+
+				cJSON* ubs_data = cJSON_Parse(uCLIENT->body.c_str());
+
+				this->_token = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(ubs_data, "token")->valuestring);
+				this->_UID = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "uid")->valuestring);
 			}
 			return err;
 		}
@@ -64,6 +73,34 @@ namespace UberSnipApp
 
 			void set(Platform::String^ val) {
 				this->_password = val;
+			}
+		}
+	
+
+		property Platform::String^ LoggedInAs {
+			Platform::String^ get() {
+				return this->_LoggedInAs;
+			}
+
+			void set(Platform::String^ val) {
+				this->_LoggedInAs = val;
+			}
+		}
+
+
+		property Platform::String^ UID {
+			Platform::String^ get() {
+				return this->_UID;
+			}
+
+			void set(Platform::String^ val) {
+				this->_UID = val;
+			}
+		}
+
+		property Platform::String^ Token {
+			Platform::String^ get() {
+				return this->_token;
 			}
 		}
 
@@ -91,6 +128,7 @@ namespace UberSnipApp
 		Platform::String^ _filename;
 		Platform::String^ _views;
 		Platform::String^ _likes;
+		Platform::String^ _genre;
 		Windows::UI::Xaml::Media::ImageSource^ _Image;
 
 		event PropertyChangedEventHandler^ _PropertyChanged;
@@ -142,6 +180,16 @@ namespace UberSnipApp
 
 			void set(Platform::String^ val) {
 				this->_album = val;
+			}
+		}
+
+		property Platform::String^ Genre {
+			Platform::String^ get() {
+				return this->_genre;
+			}
+
+			void set(Platform::String^ val) {
+				this->_genre = val;
 			}
 		}
 

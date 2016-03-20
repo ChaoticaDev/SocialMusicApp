@@ -6,6 +6,8 @@
 
 #include "pch.h"
 #include "MainPage.xaml.h"
+#include "user_profile.xaml.h"
+#include <thread>
 
 using namespace UberSnipApp;
 
@@ -29,19 +31,19 @@ Item::Item() :_Title(""), _TrackName(""), _TrackAlbum("") {
 void UberSnipApp::MainPage::loadInitialTracks(void) {
 	UBERSNIP_CLIENT* uCLIENT = new UBERSNIP_CLIENT();
 	uCLIENT->kHTTP.reqURL = "http://api.ubersnip.com/tracks.php";
-	uCLIENT->kHTTP.addParam("ID", "*");
 	uCLIENT->request(uCLIENT->kHTTP);
 
 	Platform::String^ gg = STRING_UTILS::StringFromAscIIChars(uCLIENT->body);
 
 	cJSON* tracks = cJSON_Parse(uCLIENT->body.c_str());
-	int track_count = cJSON_GetArraySize(tracks);
+	tracks = tracks->child;
+	int *track_count = new int(cJSON_GetArraySize(tracks));
 
-	for (int i = 0; i < track_count; i++) {
+	for (int i = 0; i < *track_count; i++) {
 		cJSON* track = new cJSON();
 		track = cJSON_GetArrayItem(tracks, i)->child;
 
-		cJSON* currTrack = track->child;
+		cJSON* currTrack = track;
 		string *track_id = new string(currTrack->valuestring);
 
 		currTrack = currTrack->next;
@@ -61,6 +63,9 @@ void UberSnipApp::MainPage::loadInitialTracks(void) {
 
 		currTrack = currTrack->next;
 		string* track_cover = new string(currTrack->valuestring);
+
+		currTrack = currTrack->next;
+		string* genre = new string(currTrack->valuestring);
 
 		currTrack = currTrack->next;
 		string* track_views = new string(currTrack->valuestring);
@@ -83,6 +88,7 @@ void UberSnipApp::MainPage::loadInitialTracks(void) {
 		ubersnipTrack->Likes = STRING_UTILS::StringFromAscIIChars(*track_likes);
 		ubersnipTrack->Album = STRING_UTILS::StringFromAscIIChars(*track_album);
 		ubersnipTrack->Artist = STRING_UTILS::StringFromAscIIChars(*track_owner);
+		ubersnipTrack->Genre = STRING_UTILS::StringFromAscIIChars(*genre);
 		ubersnipTrack->SetImage(STRING_UTILS::StringFromAscIIChars(track_cover->c_str()));
 
 		this->UberSnipTracks->Tracks->Append(ubersnipTrack);
@@ -93,7 +99,6 @@ void UberSnipApp::MainPage::loadInitialTracks(void) {
 void UberSnipApp::MainPage::loadInitialCategories(void) {
 	UBERSNIP_CLIENT* uCLIENT = new UBERSNIP_CLIENT();
 	uCLIENT->kHTTP.reqURL = "http://api.ubersnip.com/categories.php";
-	uCLIENT->kHTTP.addParam("ID", "*");
 	uCLIENT->request(uCLIENT->kHTTP);
 
 	Platform::String^ gg = STRING_UTILS::StringFromAscIIChars(uCLIENT->body);
@@ -150,9 +155,7 @@ void UberSnipApp::MainPage::ListView_SelectionChanged(Platform::Object^ sender, 
 		activeTextBlock->Text = im->Artist;
 		activeTrackTitle->Text = im->Title;
 		activeTrackAlbum->Text = im->Album;
-
 	}
-
 
 }
 
@@ -165,7 +168,12 @@ void UberSnipApp::MainPage::activeTextBlock_SelectionChanged(Platform::Object^ s
 
 void UberSnipApp::MainPage::image_Copy_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
 {
-	if (this->LoginManager->LoggedIn) return;
+	if (this->LoginManager->LoggedIn) {
+
+		this->Frame->Navigate(user_profile::typeid, this->LoginManager);
+
+		return;
+	}
 	Windows::UI::Xaml::Media::Imaging::BitmapImage^ bitmapimg = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(ref new Uri("ms-appx://UberSnipApp/Assets/person_yellow.png"));
 	this->loginPerson->Source = bitmapimg;
 	this->flyout1->ShowAt(MainPage::Frame);
@@ -181,10 +189,11 @@ void UberSnipApp::MainPage::siteLogin(Platform::Object^ sender, Windows::UI::Xam
 		this->passwordPasswordBox->Password = "";
 		Windows::UI::Xaml::Media::Imaging::BitmapImage^ bitmapimg = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(ref new Uri("ms-appx://UberSnipApp/Assets/person_red.png"));
 		this->loginPerson->Source = bitmapimg;
-
+		activeTrackTitle->Text = "Authentication failed!";
 	}
 	else {
 		this->flyout1->Hide(); Windows::UI::Xaml::Media::Imaging::BitmapImage^ bitmapimg = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(ref new Uri("ms-appx://UberSnipApp/Assets/person.png"));
 		this->loginPerson->Source = bitmapimg;
+		activeTrackTitle->Text = "Authenticated!";
 	}
 }

@@ -100,5 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainPage.xaml" />
+    <Page Include="friendsList.xaml" />
+    <Page Include="user_profile.xaml" />
   </ItemGroup>
 </Project>

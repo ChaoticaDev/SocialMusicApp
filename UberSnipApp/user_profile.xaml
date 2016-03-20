@@ -1,0 +1,67 @@
+﻿<Page
+    x:Class="UberSnipApp.user_profile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UberSnipApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="#FF444444">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="23*"/>
+        </Grid.ColumnDefinitions>
+        <RelativePanel Grid.Column="0" Margin="0,0,0,0">
+            <Grid RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                <RelativePanel>
+                    <Image Width="100" Height="100" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="0,10,0,0" />
+                </RelativePanel>
+            </Grid>
+        </RelativePanel>
+
+        <ScrollViewer Grid.Column="1">
+            <RelativePanel>
+            <!--<Grid RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+                
+            </Grid
+            
+            <SplitView>
+                    <SplitView.Pane>
+                        <TextBlock />
+                    </SplitView.Pane>
+
+                    <SplitView.Content>
+                        <TextBlock />
+                    </SplitView.Content>
+                </SplitView>
+            
+            -->
+
+            <TextBlock Name="myTracksTextBlock" RelativePanel.AlignRightWithPanel="True" Text="My Tracks" FontFamily="Segoe Print" Foreground="#FFD1D1D1" Margin="0,10,10,0" FontSize="13.333" />
+            <ListView ItemsSource="{x:Bind DataSource.Tracks}" Height="100" Name="myTracksListView" RelativePanel.Below="myTracksTextBlock" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:UBERSNIP_TRACKSET">
+                            <RelativePanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="-12,0,0,0">
+                                <Image Name="trackCover" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Source="{x:Bind Image}" Margin="0,0,0,0" HorizontalAlignment="Left" Width="50" Height="50" />
+                                <TextBlock Name="trackArtist" RelativePanel.LeftOf="{Binding ElementName=trackCover}" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Text="{x:Bind Artist}" Margin="55,0,0,0" FontFamily="Segoe WP SemiLight" FontStyle="Italic" FontSize="10.667" Foreground="#FFACACAC" />
+                                <TextBlock Name="trackTitle" RelativePanel.LeftOf="{Binding ElementName=trackCover}" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Text="{x:Bind Title}" Margin="55,14,0,0" VerticalAlignment="Top" FontFamily="Segoe Print" FontSize="16" Foreground="#FFACACAC" FontWeight="Bold" />
+                            </RelativePanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            <TextBlock x:Name="followersTextBlock" RelativePanel.Below="myTracksListView" RelativePanel.AlignRightWithPanel="True" Text="Followers" FontFamily="Segoe Print" Foreground="#FFD1D1D1" Margin="0,10,10,0" FontSize="13.333" />
+
+                <ListView ItemsSource="{x:Bind FollowersSource.Items}" Height="100" Name="myFollowerssListVie" RelativePanel.Below="followersTextBlock" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:GENERIC_ITEM">
+                            <RelativePanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="-12,0,0,0">
+                                <TextBlock Name="trackArtist" RelativePanel.LeftOf="{Binding ElementName=trackCover}" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Text="{x:Bind Title}" Margin="5,0,0,0" FontFamily="Segoe WP SemiLight" FontStyle="Italic" FontSize="10.667" Foreground="#FFACACAC" />
+                            </RelativePanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </RelativePanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

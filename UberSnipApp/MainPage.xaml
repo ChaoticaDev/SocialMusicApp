@@ -32,7 +32,8 @@
                 <TextBlock x:Name="activeTextBlock" TextWrapping="Wrap" Text="Select a track" TextAlignment="Center" Foreground="#FFA6A6A6" FontFamily="Segoe Script" SelectionChanged="activeTextBlock_SelectionChanged" FontSize="16" Grid.Row="1"/>
                 <TextBlock Name="activeTrackTitle" TextWrapping="Wrap"  Text="" TextAlignment="Center" Foreground="#FFA6A6A6" FontFamily="Segoe Print" SelectionChanged="activeTextBlock_SelectionChanged" FontSize="21.333" Grid.Row="2"/>
                 <TextBlock Name="activeTrackAlbum" TextWrapping="Wrap"  Text="" TextAlignment="Center" Foreground="#FFA6A6A6" FontFamily="Segoe Script" SelectionChanged="activeTextBlock_SelectionChanged" FontSize="16" Grid.Row="3" Grid.RowSpan="2" Margin="-10,0,10,0"/>
-                <ListView SelectionChanged="ListView_SelectionChanged" ItemsSource="{x:Bind DataSource.Tracks}" x:Name="listView1_Copy" Margin="0,0,1,0" Grid.Row="5">
+                <!--
+                <ListView SelectionChanged="ListView_SelectionChanged" ItemsSource="{x:Bind DataSource.Tracks}" x:Name="listView1_Copy" Margin="0,0,1,0" Grid.Row="5" Visibility="Collapsed">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="local:UBERSNIP_TRACKSET">
                             <Grid Height="50" Margin="0,0,0,0" Width="135">
@@ -43,7 +44,8 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <TextBlock x:Name="activeTextBlock_Copy" TextWrapping="Wrap" Text="Likes" TextAlignment="Right" Foreground="#FFEAEAEA" FontFamily="Segoe Script" SelectionChanged="activeTextBlock_SelectionChanged" FontSize="16" Grid.Row="4" Margin="0,3,15,1"/>
+                -->
+                <!--<TextBlock x:Name="activeTextBlock_Copy" TextWrapping="Wrap" Text="Likes" TextAlignment="Right" Foreground="#FFEAEAEA" FontFamily="Segoe Script" SelectionChanged="activeTextBlock_SelectionChanged" FontSize="16" Grid.Row="4" Margin="0,3,15,1"/>-->
                 <Image x:Name="loginPerson" HorizontalAlignment="Center" Height="40" VerticalAlignment="Top" Width="40" Source="Assets/person_red.png" Stretch="Fill" Margin="0,10,0,0" PointerReleased="image_Copy_PointerReleased" />
             </Grid>
             <Grid Margin="0,0,0,0">
@@ -64,7 +66,7 @@
         <RelativePanel>
             <Grid Name="trackListContainer" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                 <RelativePanel>
-                    <ListView RelativePanel.Below="ContentBannerScroller" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="False" RelativePanel.AlignBottomWithPanel="True" SelectionChanged="ListView_SelectionChanged" ItemsSource="{x:Bind DataSource.Tracks}" x:Name="listView1" UseLayoutRounding="True">
+                    <ListView RelativePanel.Below="ContentBannerScroller" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="False" RelativePanel.AlignBottomWithPanel="True" SelectionChanged="ListView_SelectionChanged" ItemsSource="{x:Bind DataSource.Tracks}" x:Name="listView1">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="local:UBERSNIP_TRACKSET">
                                 <RelativePanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="-12,0,0,0">

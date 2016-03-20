@@ -140,6 +140,9 @@
   <ItemGroup>
     <ClInclude Include="APP_SETTINGS.h" />
     <ClInclude Include="cJSON\cJSON.h" />
+    <ClInclude Include="friendsList.xaml.h">
+      <DependentUpon>friendsList.xaml</DependentUpon>
+    </ClInclude>
     <ClInclude Include="KeenIOSDK_CLIENT.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h">
@@ -149,12 +152,21 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </ClInclude>
     <ClInclude Include="PlatformStringUtils.h" />
+    <ClInclude Include="user_profile.xaml.h">
+      <DependentUpon>user_profile.xaml</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="friendsList.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="user_profile.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -192,6 +204,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="cJSON\cJSON.cpp" />
+    <ClCompile Include="friendsList.xaml.cpp">
+      <DependentUpon>friendsList.xaml</DependentUpon>
+    </ClCompile>
     <ClCompile Include="MainPage.xaml.cpp">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </ClCompile>
@@ -202,6 +217,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="user_profile.xaml.cpp">
+      <DependentUpon>user_profile.xaml</DependentUpon>
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

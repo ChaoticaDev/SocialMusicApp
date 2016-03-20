@@ -1,5 +1,5 @@
 <?php
-  $db = mysqli_connect("", "", "", "io_socialapp");
+  $db = mysqli_connect("", "", "", "");
 
   $sel = mysqli_query($db, "SELECT * FROM categories");
   $arr["categories"] = array();
