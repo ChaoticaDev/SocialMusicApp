@@ -17,6 +17,8 @@ To setup the application to work on your own server, view the wiki: [`Getting St
 
 >> Load category-list (0.0.3+)
 
+>> Simple token based authentication initiated (0.0.5+)
+
 > User Profile (0.0.5+)
 
 >> My Tracks (0.0.5+)
