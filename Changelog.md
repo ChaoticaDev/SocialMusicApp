@@ -1,5 +1,11 @@
 ## Change log
 
+v 0.0.6 
+-----------
+> Fixes to User Profile
+>> * Added binding USER_PROFILE and USER_DATA classes.
+
+
 v 0.0.5 initial changelog
 -----------
 *Login Manager Update

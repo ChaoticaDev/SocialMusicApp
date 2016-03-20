@@ -287,7 +287,106 @@ namespace UberSnipApp
 		}
 	};
 
+	[Windows::UI::Xaml::Data::Bindable]
+	public ref class USER_PROFILE sealed {
+	private:
+		Platform::String^ _uid;
+		Platform::String^ _username;
+		Windows::UI::Xaml::Media::ImageSource^ _avatar;
+		Windows::UI::Xaml::Media::ImageSource^ _coverimg;
+		Platform::String^ _bio;
+		event PropertyChangedEventHandler^ _PropertyChanged;
 
+		void OnPropertyChanged(Platform::String^ propertyName)
+		{
+			PropertyChangedEventArgs^ pcea = ref new  PropertyChangedEventArgs(propertyName);
+			_PropertyChanged(this, pcea);
+		}
+	public:
+		USER_PROFILE() {
+
+		};
+
+		property Platform::String^ UID {
+			Platform::String^ get() {
+				return this->_uid;
+			}
+
+			void set(Platform::String^ val) {
+				this->_uid = val;
+				OnPropertyChanged("UID");
+			}
+		}
+
+		property Platform::String^ Username {
+			Platform::String^ get() {
+				return this->_username;
+			}
+
+			void set(Platform::String^ val) {
+				this->_username = val;
+				OnPropertyChanged("UID");
+			}
+		}
+
+		//Avatar
+		property Windows::UI::Xaml::Media::ImageSource^ Avatar
+		{
+			Windows::UI::Xaml::Media::ImageSource^ get()
+			{
+				return this->_avatar;
+			}
+			void set(Windows::UI::Xaml::Media::ImageSource^ value)
+			{
+				this->_avatar = value;
+				OnPropertyChanged("CoverImage");
+			}
+		}
+
+		//CoverImage
+		property Windows::UI::Xaml::Media::ImageSource^ CoverImage
+		{
+			Windows::UI::Xaml::Media::ImageSource^ get()
+			{
+				return this->_coverimg;
+			}
+			void set(Windows::UI::Xaml::Media::ImageSource^ value)
+			{
+				this->_coverimg = value;
+				OnPropertyChanged("CoverImage");
+			}
+		}
+
+		void SetCoverImage(Platform::String^ path)
+		{
+			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri(path);
+			this->_coverimg = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+		}
+
+		void SetAvatar(Platform::String^ path)
+		{
+			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri(path);
+			this->_avatar = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+		}
+
+	};
+
+	[Windows::Foundation::Metadata::WebHostHiddenAttribute]
+	public ref class USER_DATA sealed {
+	private:
+		Windows::UI::Xaml::Interop::IBindableObservableVector^ users;
+
+	public:
+		USER_DATA() {
+			this->users= ref new Platform::Collections::Vector<UberSnipApp::USER_PROFILE^>();
+		}
+
+		property Windows::UI::Xaml::Interop::IBindableObservableVector^ Users {
+			Windows::UI::Xaml::Interop::IBindableObservableVector^ get() {
+				return this->users;
+			}
+		}
+	};
 
 
 	[Windows::UI::Xaml::Data::Bindable]
@@ -344,7 +443,6 @@ namespace UberSnipApp
 		}
 	};
 	
-
 	///[Windows::Foundation::Metadata::WebHostHiddenAttribute]
 	[Windows::UI::Xaml::Data::Bindable]
 	public ref class Item sealed

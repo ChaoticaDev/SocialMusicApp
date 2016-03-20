@@ -26,6 +26,15 @@ namespace UberSnipApp
 		UberSnipApp::UBERSNIP_TRACKS^ MyTracks;
 		UberSnipApp::UBERSNIP_LOGIN_HANDLER^ _LoginManager;
 		UberSnipApp::GENERIC_DATA^ genericData;
+
+		// People who follow you
+		UberSnipApp::USER_DATA^ myFollowers;
+
+		//People you follow
+		UberSnipApp::USER_DATA^ myFollowings;
+
+		//Mutual Friends
+		UberSnipApp::USER_DATA^ mutualFollows;
 	protected:
 		virtual void OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs^ e) override;
 
@@ -47,9 +56,9 @@ namespace UberSnipApp
 			UberSnipApp::UBERSNIP_TRACKS^ get() { return this->MyTracks; };
 		}
 
-		property UberSnipApp::GENERIC_DATA^ FollowersSource
+		property UberSnipApp::USER_DATA^ FollowersSource
 		{
-			UberSnipApp::GENERIC_DATA^ get() { return this->genericData; };
+			UberSnipApp::USER_DATA^ get() { return this->myFollowers; };
 
 		}
 

@@ -15,7 +15,7 @@
         <RelativePanel Grid.Column="0" Margin="0,0,0,0">
             <Grid RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
                 <RelativePanel>
-                    <Image Width="100" Height="100" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="0,10,0,0" />
+                    <Image Name="profileImage"  Width="100" Height="100" RelativePanel.AlignHorizontalCenterWithPanel="True" Margin="0,10,0,0" />
                 </RelativePanel>
             </Grid>
         </RelativePanel>
@@ -52,11 +52,11 @@
                 </ListView>
             <TextBlock x:Name="followersTextBlock" RelativePanel.Below="myTracksListView" RelativePanel.AlignRightWithPanel="True" Text="Followers" FontFamily="Segoe Print" Foreground="#FFD1D1D1" Margin="0,10,10,0" FontSize="13.333" />
 
-                <ListView ItemsSource="{x:Bind FollowersSource.Items}" Height="100" Name="myFollowerssListVie" RelativePanel.Below="followersTextBlock" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
+                <ListView ItemsSource="{x:Bind FollowersSource.Users}" Height="100" Name="myFollowerssListView" RelativePanel.Below="followersTextBlock" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True">
                     <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="local:GENERIC_ITEM">
+                        <DataTemplate x:DataType="local:USER_PROFILE">
                             <RelativePanel RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="-12,0,0,0">
-                                <TextBlock Name="trackArtist" RelativePanel.LeftOf="{Binding ElementName=trackCover}" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Text="{x:Bind Title}" Margin="5,0,0,0" FontFamily="Segoe WP SemiLight" FontStyle="Italic" FontSize="10.667" Foreground="#FFACACAC" />
+                                <TextBlock Name="trackArtist" RelativePanel.LeftOf="{Binding ElementName=trackCover}" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Text="{x:Bind Username}" Margin="5,0,0,0" FontFamily="Segoe WP SemiLight" FontStyle="Italic" FontSize="14" Foreground="#FFACACAC" />
                             </RelativePanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

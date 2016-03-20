@@ -32,6 +32,9 @@ void user_profile::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventA
 
 	this->LoginManager = it;
 
+	//Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri(path);
+	//this->profileImage = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+	//this->LoginManager->LoggedInAs
 
 	this->LoadMyTracks();
 	this->LoadMyFollowers();
@@ -52,13 +55,18 @@ void user_profile::LoadMyFollowers(void) {
 
 	for (int i = 0; i < *cat_count; i++) {
 
-		string *username = new string(cJSON_GetObjectItem(cats->child, "username")->valuestring);
+		cJSON* curr_cats = cats->child;
+
+		for (int m = 0; m < i; m++) {
+			curr_cats = cats->child->next;
+		}
+		string *username = new string(cJSON_GetObjectItem(curr_cats, "username")->valuestring);
 
 
-		GENERIC_ITEM^ ubersnipFollower = ref new GENERIC_ITEM();
-		ubersnipFollower->Title = STRING_UTILS::StringFromAscIIChars(*username);
+		UberSnipApp::USER_PROFILE^ ubersnipFollower = ref new UberSnipApp::USER_PROFILE();
+		ubersnipFollower->Username = STRING_UTILS::StringFromAscIIChars(*username);
 
-		this->genericData->Items->Append(ubersnipFollower);
+		this->myFollowers->Users->Append(ubersnipFollower);
 	}
 }
 void user_profile::LoadMyTracks(void) {
@@ -134,5 +142,6 @@ user_profile::user_profile()
 	InitializeComponent();
 	this->MyTracks = ref new UberSnipApp::UBERSNIP_TRACKS();
 	this->genericData = ref new GENERIC_DATA();
+	this->myFollowers = ref new USER_DATA();
 
 }
