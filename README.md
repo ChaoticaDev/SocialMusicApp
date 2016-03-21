@@ -30,3 +30,5 @@ To setup the application to work on your own server, view the wiki: [`Getting St
 > Simple theme
 
 ![UberSnip](http://api.ubersnip.com/ubs-app-0.0.4.gif)
+
+![UberSnip](http://api.ubersnip.com/ubs-app-0.0.7.gif)
