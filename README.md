@@ -6,6 +6,8 @@ This social network / music store is geared towards those wanting to learn how t
 
 To setup the application to work on your own server, view the wiki: [`Getting Started`](https://github.com/UberSnip/SocialMusicApp/wiki/Getting-started) 
 
+[Changelog](https://github.com/UberSnip/SocialMusicApp/blob/master/Changelog.md)
+
 ## Current Feature List
 > Basic API (php)
 
