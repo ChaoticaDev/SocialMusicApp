@@ -22,100 +22,6 @@ namespace UberSnipApp
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
 
-	public ref class UBERSNIP_LOGIN_HANDLER sealed{
-
-	private:
-		Platform::String^ _username;
-		Platform::String^ _password;
-		Platform::String^ _LoggedInAs;
-		Platform::String^ _UID = "0";
-		Platform::String^ _token;
-		bool loggedIn = false;
-	public:
-
-
-		property Platform::String^ Username {
-			Platform::String^ get() {
-				return this->_username;
-			}
-
-			void set(Platform::String^ val) {
-				this->_username = val;
-			}
-		}
-
-		int login(Platform::String^ username, Platform::String^ password) {
-
-			UBERSNIP_CLIENT* uCLIENT = new UBERSNIP_CLIENT();
-			uCLIENT->kHTTP.reqURL = "http://api.ubersnip.com/login.php";
-			uCLIENT->kHTTP.addParam("username", STRING_UTILS::StringToAscIIChars(username));
-			uCLIENT->kHTTP.addParam("password", STRING_UTILS::StringToAscIIChars(password));
-			uCLIENT->request(uCLIENT->kHTTP);
-
-			int err = uCLIENT->body.find("__api_err");
-
-			if (err < 0) {
-				this->loggedIn = true;
-				this->LoggedInAs = username;
-
-				cJSON* ubs_data = cJSON_Parse(uCLIENT->body.c_str());
-
-				this->_token = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(ubs_data, "token")->valuestring);
-				this->_UID = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "uid")->valuestring);
-			}
-			return err;
-		}
-
-		property Platform::String^ Password {
-			Platform::String^ get() {
-				return this->_password;
-			}
-
-			void set(Platform::String^ val) {
-				this->_password = val;
-			}
-		}
-	
-
-		property Platform::String^ LoggedInAs {
-			Platform::String^ get() {
-				return this->_LoggedInAs;
-			}
-
-			void set(Platform::String^ val) {
-				this->_LoggedInAs = val;
-			}
-		}
-
-
-		property Platform::String^ UID {
-			Platform::String^ get() {
-				return this->_UID;
-			}
-
-			void set(Platform::String^ val) {
-				this->_UID = val;
-			}
-		}
-
-		property Platform::String^ Token {
-			Platform::String^ get() {
-				return this->_token;
-			}
-		}
-
-		property bool LoggedIn {
-			bool get() {
-				return this->loggedIn;
-			}
-
-			/*void set(bool val) {
-				this->loggedIn = val;
-			}*/
-		}
-	};
-
-
 	[Windows::UI::Xaml::Data::Bindable]
 	public ref class UBERSNIP_TRACKSET sealed {
 	private:
@@ -304,7 +210,7 @@ namespace UberSnipApp
 		}
 	public:
 		USER_PROFILE() {
-
+			
 		};
 
 		property Platform::String^ UID {
@@ -326,6 +232,17 @@ namespace UberSnipApp
 			void set(Platform::String^ val) {
 				this->_username = val;
 				OnPropertyChanged("UID");
+			}
+		}
+
+		property Platform::String^ Bio {
+			Platform::String^ get() {
+				return this->_bio;
+			}
+
+			void set(Platform::String^ val) {
+				this->_bio = val;
+				OnPropertyChanged("Bio");
 			}
 		}
 
@@ -388,6 +305,118 @@ namespace UberSnipApp
 		}
 	};
 
+	public ref class UBERSNIP_LOGIN_HANDLER sealed {
+
+	private:
+		Platform::String^ _username;
+		Platform::String^ _password;
+		Platform::String^ _LoggedInAs;
+		Platform::String^ _UID = "0";
+		Platform::String^ _token;
+		bool loggedIn = false;
+		UberSnipApp::USER_PROFILE^ _profile;
+
+	public:
+
+		UBERSNIP_LOGIN_HANDLER() {
+			this->_profile = ref new UberSnipApp::USER_PROFILE();
+		}
+
+		property Platform::String^ Username {
+			Platform::String^ get() {
+				return this->_username;
+			}
+
+			void set(Platform::String^ val) {
+				this->_username = val;
+			}
+		}
+
+		property UberSnipApp::USER_PROFILE^ Profile {
+			UberSnipApp::USER_PROFILE^ get() {
+				return this->_profile;
+			}
+		}
+
+		int login(Platform::String^ username, Platform::String^ password) {
+
+			UBERSNIP_CLIENT* uCLIENT = new UBERSNIP_CLIENT();
+			uCLIENT->kHTTP.reqURL = "http://api.ubersnip.com/login.php";
+			uCLIENT->kHTTP.addParam("username", STRING_UTILS::StringToAscIIChars(username));
+			uCLIENT->kHTTP.addParam("password", STRING_UTILS::StringToAscIIChars(password));
+			uCLIENT->request(uCLIENT->kHTTP);
+
+			int err = uCLIENT->body.find("__api_err");
+
+			if (err < 0) {
+				this->loggedIn = true;
+				this->LoggedInAs = username;
+
+				cJSON* ubs_data = cJSON_Parse(uCLIENT->body.c_str());
+
+				this->_token = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(ubs_data, "token")->valuestring);
+				this->_UID = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "uid")->valuestring);
+
+				Platform::String^ avatar = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "avatar")->valuestring);
+				Platform::String^ coverimage = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "cover")->valuestring);
+				Platform::String^ bio = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "bio")->valuestring);
+				this->_profile->SetAvatar(avatar);
+				this->_profile->SetCoverImage(coverimage);
+				this->_profile->Bio = bio;
+				this->_profile->Username = username;
+
+			}
+			return err;
+		}
+
+		property Platform::String^ Password {
+			Platform::String^ get() {
+				return this->_password;
+			}
+
+			void set(Platform::String^ val) {
+				this->_password = val;
+			}
+		}
+
+
+		property Platform::String^ LoggedInAs {
+			Platform::String^ get() {
+				return this->_LoggedInAs;
+			}
+
+			void set(Platform::String^ val) {
+				this->_LoggedInAs = val;
+			}
+		}
+
+
+		property Platform::String^ UID {
+			Platform::String^ get() {
+				return this->_UID;
+			}
+
+			void set(Platform::String^ val) {
+				this->_UID = val;
+			}
+		}
+
+		property Platform::String^ Token {
+			Platform::String^ get() {
+				return this->_token;
+			}
+		}
+
+		property bool LoggedIn {
+			bool get() {
+				return this->loggedIn;
+			}
+
+			/*void set(bool val) {
+			this->loggedIn = val;
+			}*/
+		}
+	};
 
 	[Windows::UI::Xaml::Data::Bindable]
 	public ref class GENERIC_ITEM sealed {

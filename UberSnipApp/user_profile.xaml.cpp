@@ -36,6 +36,7 @@ void user_profile::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventA
 	//this->profileImage = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
 	//this->LoginManager->LoggedInAs
 
+	this->profileImage->Source = this->LoginManager->Profile->Avatar;
 	this->LoadMyTracks();
 	this->LoadMyFollowers();
 	Windows::UI::Xaml::Controls::Page::OnNavigatedTo(e);
@@ -61,10 +62,12 @@ void user_profile::LoadMyFollowers(void) {
 			curr_cats = cats->child->next;
 		}
 		string *username = new string(cJSON_GetObjectItem(curr_cats, "username")->valuestring);
+		string *avatar = new string(cJSON_GetObjectItem(curr_cats, "avatar")->valuestring);
 
 
 		UberSnipApp::USER_PROFILE^ ubersnipFollower = ref new UberSnipApp::USER_PROFILE();
 		ubersnipFollower->Username = STRING_UTILS::StringFromAscIIChars(*username);
+		ubersnipFollower->SetAvatar(STRING_UTILS::StringFromAscIIChars(avatar->c_str()));
 
 		this->myFollowers->Users->Append(ubersnipFollower);
 	}
