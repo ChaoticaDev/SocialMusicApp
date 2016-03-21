@@ -49,7 +49,7 @@
                 <Image x:Name="loginPerson" HorizontalAlignment="Center" Height="40" VerticalAlignment="Top" Width="40" Source="Assets/person_red.png" Stretch="Fill" Margin="0,10,0,0" PointerReleased="image_Copy_PointerReleased" />
             </Grid>
             <Grid Margin="0,0,0,0">
-                <ListView  x:Name="listView" Margin="0" Background="#FF555555" ItemsSource="{x:Bind CategorySource.Items}" SelectionChanged="ListView_SelectionChanged">
+                <ListView x:Name="listView" SelectionChanged="listView_SelectionChanged_1" Margin="0" Background="#FF555555" ItemsSource="{x:Bind CategorySource.Items}">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="local:GENERIC_ITEM">
                             <TextBlock Text="{x:Bind Title}" FontFamily="Segoe Print" Foreground="White" />

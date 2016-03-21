@@ -1,5 +1,12 @@
 ## Change log
 
+v 0.0.7
+-----------
+> Save authentication data / Reauth on launch.
+> Bind tracks to categories.
+> API Updates
+> Basic page navigation
+
 v 0.0.6 
 -----------
 > Fixes to User Profile

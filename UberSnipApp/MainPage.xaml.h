@@ -14,6 +14,7 @@ using namespace Windows::UI::Xaml::Interop;
 #include "PlatformStringUtils.h"
 
 #include "cJSON/cJSON.h"
+#include "APP_SETTINGS.h"
 
 namespace UberSnipApp
 {
@@ -365,6 +366,8 @@ namespace UberSnipApp
 				this->_profile->Bio = bio;
 				this->_profile->Username = username;
 
+				APP_SETTINGS::WriteProperty("AuthToken", this->Token);
+
 			}
 			return err;
 		}
@@ -598,6 +601,7 @@ namespace UberSnipApp
 
 		}
 	};
+
 	public ref class MainPage sealed
 	{
 
@@ -611,13 +615,11 @@ namespace UberSnipApp
 		property UBERSNIP_TRACKS^ DataSource
 		{
 			UBERSNIP_TRACKS^ get() { return this->UberSnipTracks; };
-
 		}
 
 		property GENERIC_DATA^ CategorySource
 		{
 			GENERIC_DATA^ get() { return this->genericData; };
-
 		}
 
 		property UBERSNIP_LOGIN_HANDLER^ LoginManager {
@@ -633,9 +635,10 @@ namespace UberSnipApp
 	private:
 		void ListView_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e);
 		void activeTextBlock_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-		void loadInitialTracks(void);
+		void loadTracks(string tracks_url);
 		void loadInitialCategories(void);
 		void image_Copy_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		void siteLogin(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void listView_SelectionChanged_1(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e);
 	};
 }

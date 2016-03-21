@@ -92,9 +92,28 @@ void user_profile::LoadMyTracks(void) {
 	cJSON* tracks = cJSON_Parse(uCLIENT->body.c_str());
 	tracks = cJSON_GetObjectItem(tracks, "tracks");
 	int *track_count = new int(cJSON_GetArraySize(tracks));
+	this->MyTracks->Tracks->Clear();
 
 	for (int i = 0; i < *track_count; i++) {
-		cJSON* track = new cJSON();
+		cJSON* curr_track = tracks->child;
+		for (int m = 0; m < i; m++) {
+			curr_track = tracks->child->next;
+		}
+
+
+		string *track_id = new string(cJSON_GetObjectItem(curr_track, "ID")->valuestring);
+		string *track_title = new string(cJSON_GetObjectItem(curr_track, "title")->valuestring);
+		string *track_cover = new string(cJSON_GetObjectItem(curr_track, "cover")->valuestring);
+
+
+		UBERSNIP_TRACKSET^ ubersnipTrack = ref new UBERSNIP_TRACKSET();
+		ubersnipTrack->ID = STRING_UTILS::StringFromAscIIChars(*track_id);
+		ubersnipTrack->Title = STRING_UTILS::StringFromAscIIChars(*track_title);
+		ubersnipTrack->SetImage(STRING_UTILS::StringFromAscIIChars(track_cover->c_str()));
+
+		this->MyTracks->Tracks->Append(ubersnipTrack);
+
+		/*cJSON* track = new cJSON();
 		track = cJSON_GetArrayItem(tracks, i)->child;
 
 		cJSON* currTrack = track;
@@ -145,8 +164,9 @@ void user_profile::LoadMyTracks(void) {
 		ubersnipTrack->Genre = STRING_UTILS::StringFromAscIIChars(*genre);
 		ubersnipTrack->SetImage(STRING_UTILS::StringFromAscIIChars(track_cover->c_str()));
 
-		this->MyTracks->Tracks->Append(ubersnipTrack);
+		this->UberSnipTracks->Tracks->Append(ubersnipTrack);*/
 	}
+	
 }
 
 user_profile::user_profile()
