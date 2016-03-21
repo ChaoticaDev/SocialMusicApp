@@ -65,5 +65,6 @@ namespace UberSnipApp
 	private:
 		void LoadMyFollowers(void);
 		void LoadMyTracks(void);
+		void goBack(Platform::Object^ sender, Windows::UI::Core::BackRequestedEventArgs^ args);
 	};
 }

@@ -129,6 +129,9 @@ MainPage::MainPage()
 	this->genericData = ref new GENERIC_DATA();
 	this->LoginManager = ref new UberSnipApp::UBERSNIP_LOGIN_HANDLER();
 
+
+	Windows::UI::Core::SystemNavigationManager::GetForCurrentView()->AppViewBackButtonVisibility = Windows::UI::Core::AppViewBackButtonVisibility::Collapsed;
+
 	//UBERSNIP_TRACKSET^ im = ref new UBERSNIP_TRACKSET();
 	//im->Title = "Can't make you want me.";
 	//im->Artist = "Jules M.";

@@ -39,7 +39,16 @@ void user_profile::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventA
 	this->profileImage->Source = this->LoginManager->Profile->Avatar;
 	this->LoadMyTracks();
 	this->LoadMyFollowers();
+
+
+	Windows::UI::Core::SystemNavigationManager::GetForCurrentView()->AppViewBackButtonVisibility = Windows::UI::Core::AppViewBackButtonVisibility::Visible;
+	Windows::UI::Core::SystemNavigationManager::GetForCurrentView()->BackRequested += ref new Windows::Foundation::EventHandler<Windows::UI::Core::BackRequestedEventArgs^>(this, &user_profile::goBack);
+
 	Windows::UI::Xaml::Controls::Page::OnNavigatedTo(e);
+}
+
+void user_profile::goBack(Platform::Object^ sender, Windows::UI::Core::BackRequestedEventArgs^ args) {
+	this->Frame->GoBack();
 }
 
 void user_profile::LoadMyFollowers(void) {
