@@ -4,7 +4,7 @@ Social Network Windows 10 app Managed C++.
 This social network / music store is geared towards those wanting to learn how to build a social network app (Windows 10 UWP), or those wanting to create their own Music Store.
 
 
-To setup the application to work on your own server, view the wiki: [`Getting Started`](https://github.com/UberSnip/SocialMusicApp/wiki/Getting-started.) 
+To setup the application to work on your own server, view the wiki: [`Getting Started`](https://github.com/UberSnip/SocialMusicApp/wiki/Getting-started) 
 
 ## Current Feature List
 > Basic API (php)
