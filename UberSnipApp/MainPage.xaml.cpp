@@ -8,7 +8,12 @@
 #include "MainPage.xaml.h"
 #include "user_profile.xaml.h"
 #include <thread>
+#include <WinUser.h>
+#ifndef UNICODE
+#define UNICODE
+#endif
 
+#include<windows.h>
 using namespace UberSnipApp;
 
 using namespace Platform;
@@ -157,7 +162,7 @@ MainPage::MainPage()
 		this->LoginManager->login("uwxauth", LoginMgrAuthToken);
 		this->flyout1->Hide(); Windows::UI::Xaml::Media::Imaging::BitmapImage^ bitmapimg = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(ref new Uri("ms-appx://UberSnipApp/Assets/person.png"));
 		this->loginPerson->Source = bitmapimg;
-		activeTrackTitle->Text = "Authenticated!";
+		//activeTrackTitle->Text = "Authenticated!";
 	}
 	//UBERSNIP_TRACKSET^ im = ref new UBERSNIP_TRACKSET();
 	//im->Title = "Can't make you want me.";
@@ -219,12 +224,14 @@ void UberSnipApp::MainPage::siteLogin(Platform::Object^ sender, Windows::UI::Xam
 		this->passwordPasswordBox->Password = "";
 		Windows::UI::Xaml::Media::Imaging::BitmapImage^ bitmapimg = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(ref new Uri("ms-appx://UberSnipApp/Assets/person_red.png"));
 		this->loginPerson->Source = bitmapimg;
-		activeTrackTitle->Text = "Authentication failed!";
+		//activeTrackTitle->Text = "Authentication failed!";
+		Windows::UI::Popups::MessageDialog^ mD = ref new Windows::UI::Popups::MessageDialog("Authentication failed!");
 	}
 	else {
 		this->flyout1->Hide(); Windows::UI::Xaml::Media::Imaging::BitmapImage^ bitmapimg = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(ref new Uri("ms-appx://UberSnipApp/Assets/person.png"));
 		this->loginPerson->Source = bitmapimg;
-		activeTrackTitle->Text = "Authenticated!";
+		//activeTrackTitle->Text = "Authenticated!";
+		Windows::UI::Popups::MessageDialog^ mD = ref new Windows::UI::Popups::MessageDialog("Authenticated!");
 	}
 }
 
