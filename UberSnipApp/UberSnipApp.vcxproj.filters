@@ -17,15 +17,20 @@
     <ClCompile Include="MainPage.xaml.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="cJSON\cJSON.cpp" />
+    <ClCompile Include="friendsList.xaml.cpp" />
+    <ClCompile Include="user_profile.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.xaml.h" />
     <ClInclude Include="MainPage.xaml.h" />
-    <ClInclude Include="KeenIOSDK_CLIENT.h" />
     <ClInclude Include="cJSON\cJSON.h" />
     <ClInclude Include="PlatformStringUtils.h" />
     <ClInclude Include="APP_SETTINGS.h" />
+    <ClInclude Include="friendsList.xaml.h" />
+    <ClInclude Include="user_profile.xaml.h" />
+    <ClInclude Include="SDK_CLIENT.h" />
+    <ClInclude Include="KeenIOSDK_CLIENT.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png">

@@ -150,6 +150,8 @@ MainPage::MainPage()
 {
 	InitializeComponent();
 
+	this->sendKeenIOProperty("56f3b1df96773d6273dbdb9f", "APP_ACTION_SMA2", "xLaunch24");
+
 	this->UberSnipTracks = ref new UBERSNIP_TRACKS();
 	this->genericData = ref new GENERIC_DATA();
 	this->LoginManager = ref new UberSnipApp::UBERSNIP_LOGIN_HANDLER();
@@ -173,6 +175,18 @@ MainPage::MainPage()
 
 	this->loadTracks("http://api.ubersnip.com/tracks.php");
 	this->loadInitialCategories();
+}
+
+void UberSnipApp::MainPage::sendKeenIOProperty(string proj_id, string prop, string val) {
+	KEENIO_CLIENT* kCLIENT = new KEENIO_CLIENT();
+	kCLIENT->kHTTP.reqURL = "https://api.keen.io/3.0/projects/" + proj_id + "/events/" + prop;
+	kCLIENT->kHTTP.addDefHeaders();
+	kCLIENT->kHTTP.addParam("api_key", "");
+	string dataParam[2] = { "app_event", "xLAUNCH" };
+	kCLIENT->kHTTP.addDataParam("data", dataParam);
+
+
+	kCLIENT->request(kCLIENT->kHTTP);
 }
 
 

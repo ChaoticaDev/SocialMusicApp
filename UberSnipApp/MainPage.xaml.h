@@ -11,6 +11,7 @@ using namespace Windows::UI::Xaml::Interop;
 
 #include "MainPage.g.h"
 #include "KeenIOSDK_CLIENT.h"
+#include "SDK_CLIENT.h"
 #include "PlatformStringUtils.h"
 
 #include "cJSON/cJSON.h"
@@ -640,5 +641,6 @@ namespace UberSnipApp
 		void image_Copy_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		void siteLogin(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void listView_SelectionChanged_1(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e);
+		void sendKeenIOProperty(string proj_id, string prop, string val);
 	};
 }
