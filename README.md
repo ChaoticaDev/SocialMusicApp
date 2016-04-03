@@ -34,3 +34,22 @@ To setup the application to work on your own server, view the wiki: [`Getting St
 ![UberSnip](http://api.ubersnip.com/ubs-app-0.0.4.gif)
 
 ![UberSnip](http://api.ubersnip.com/ubs-app-0.0.7.gif)
+
+---
+
+UXBlumIO Version:
+
+> The following features are not temporarily not available
+
+>> Friends list (Followers/Following)
+
+>> Categories
+
+
+> The following features have been introduced, no longer available on master branch
+
+>> Multiple account handling
+
+>> Track pages
+
+![XBlumIO Theme(https://raw.githubusercontent.com/UberSnipUX/UXBlumIO/master/ss1.gif)
