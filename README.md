@@ -52,4 +52,4 @@ UXBlumIO Version:
 
 >> Track pages
 
-![XBlumIO Theme(https://raw.githubusercontent.com/UberSnipUX/UXBlumIO/master/ss1.gif)
+![XBlumIO Theme](https://raw.githubusercontent.com/UberSnipUX/UXBlumIO/master/ss1.gif)
