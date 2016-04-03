@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>e88d675d-7929-4b84-b2db-ee1704613d73</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>ff811599-70a6-4b52-b922-0ded056ce404</UniqueIdentifier>
+      <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
+    </Filter>
+    <Filter Include="external">
+      <UniqueIdentifier>{facf6102-bd10-406e-a68e-3b782a5d5372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external\JSON">
+      <UniqueIdentifier>{7ee12c8b-621f-40c7-a103-5de48cdb367d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="App.xaml.cpp" />
+    <ClCompile Include="MainPage.xaml.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="MyFavoritesStream.xaml.cpp" />
+    <ClCompile Include="StreamView.xaml.cpp" />
+    <ClCompile Include="StreamMoments.xaml.cpp" />
+    <ClCompile Include="LoginPage.xaml.cpp" />
+    <ClCompile Include="StreamViewMoreItems.xaml.cpp" />
+    <ClCompile Include="UBS_SDK.h" />
+    <ClCompile Include="external\JSON\cJSON.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="App.xaml.h" />
+    <ClInclude Include="MainPage.xaml.h" />
+    <ClInclude Include="MyFavoritesStream.xaml.h" />
+    <ClInclude Include="StreamView.xaml.h" />
+    <ClInclude Include="StreamMoments.xaml.h" />
+    <ClInclude Include="LoginPage.xaml.h" />
+    <ClInclude Include="StreamViewMoreItems.xaml.h" />
+    <ClInclude Include="external\JSON\cJSON.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ic_menu.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\ic_add.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\43.jpg">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\abstractguy.jpg">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\aguilera.jpg">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\jayrock.jpg">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\michaeljackson.jpg">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_fastforward.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_left_black.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_pause.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_play_black.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_play_white.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_rewind.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_right_black.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_skipbackward.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_skipforward.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\mariah-carey-charmbracelet-wallpaper-3.jpg">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Mariah-Carey-2015.jpg">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_heart.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_heartbeat.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_user_add.png">
+      <Filter>Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UXBlumIO_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainPage.xaml" />
+    <Page Include="MyFavoritesStream.xaml" />
+    <Page Include="StreamView.xaml" />
+    <Page Include="StreamMoments.xaml" />
+    <Page Include="StreamViewMoreItems.xaml" />
+    <Page Include="LoginPage.xaml" />
+  </ItemGroup>
+</Project>

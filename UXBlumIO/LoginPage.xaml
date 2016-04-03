@@ -1,0 +1,71 @@
+﻿<Page
+    x:Class="UXBlumIO.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UXBlumIO"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <RelativePanel Background="#B212004D">
+        <Image x:Name="streamPlayerBGImage" Source="Assets/jayrock.jpg" Stretch="UniformToFill" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Opacity="0.05" />
+        <!--<Rectangle RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Fill="#B212004D">
+
+        </Rectangle>-->
+
+        <RelativePanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Height="0"/>
+
+        <TextBox x:Name="inputLoginUsername" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="100,20,100,0" PlaceholderText="Username" BorderBrush="White" />
+        <PasswordBox x:Name="inputLoginPassword" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.Below="inputLoginUsername" Margin="100,20,100,0" PlaceholderText="Password" BorderBrush="White" />
+        <Button x:Name="loginButton" RelativePanel.AlignRightWith="inputLoginPassword" RelativePanel.Below="inputLoginPassword" Content="Login" Background="#7FFFFFFF" Margin="0,10,100,0" Click="loginButton_Click"/>
+        <TextBlock RelativePanel.AlignVerticalCenterWith="loginButton" RelativePanel.LeftOf="loginButton" />
+        
+        <GridView x:Name="streamPlayerSimilarStreams" RelativePanel.AlignHorizontalCenterWithPanel="True" Padding="10" RelativePanel.Below="loginButton" RelativePanel.Above="footer" Margin="0,5,0,0">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+
+            <GridViewItem>
+                <RelativePanel>
+                    <Image x:Name="itemImage"  Source="Assets/mariah-carey-charmbracelet-wallpaper-3.jpg" Width="50" Height="50" RelativePanel.AlignLeftWithPanel="True" Margin="0,0,10,0" />
+                    <!--<RichTextBlock RelativePanel.RightOf="{Binding Parent.Children[0], RelativeSource={RelativeSource Mode=Self}}" Foreground="White">
+                        <Paragraph FontSize="17.333">
+                            Example Artist
+                        </Paragraph>
+                        <Paragraph>
+                            Pop Music, Hip Hop Music
+                        </Paragraph>
+                    </RichTextBlock>-->
+                </RelativePanel>
+            </GridViewItem>
+
+            <GridViewItem>
+                <RelativePanel>
+                    <Image Source="Assets/aguilera.jpg" Width="50" Height="50" RelativePanel.AlignLeftWithPanel="True" Margin="0,0,10,0" />
+
+                </RelativePanel>
+            </GridViewItem>
+
+            <GridViewItem>
+                <RelativePanel>
+                    <Image Source="Assets/michaeljackson.jpg" Width="50" Height="50" RelativePanel.AlignLeftWithPanel="True" Margin="0,0,10,0" />
+
+                </RelativePanel>
+            </GridViewItem>
+
+            <GridViewItem>
+                <RelativePanel>
+                    <Image Source="Assets/jayrock.jpg" Width="50" Height="50" RelativePanel.AlignLeftWithPanel="True" Margin="0,0,10,0" />
+                    
+                </RelativePanel>
+            </GridViewItem>
+        </GridView>
+
+        <RelativePanel x:Name="footer" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Height="25" Background="#CC151515">
+            <TextBlock Text="Welcome to UberSnip - UWP Template" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Foreground="White" FontSize="13.333" />
+        </RelativePanel>
+
+    </RelativePanel>
+</Page>

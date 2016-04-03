@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="UXBlumIO.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UXBlumIO"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <RelativePanel>
+  
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.AlignLeftWithPanel="True" Margin="50,0,0,0"  RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
+
+        <RelativePanel x:Name="nav_panel" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" Height="40">
+
+            <Image x:Name="ic_menu" Source="Assets/ic_menu.png" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Width="15" Height="15" Margin="10,0,0,0" PointerReleased="ic_menu_PointerReleased" Visibility="Collapsed" />
+            <Image x:Name="ic_menu_add" Source="Assets/ic_add.png" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Width="15" Height="15" Margin="0,0,10,0" RelativePanel.LeftOf="menu_create_tb" PointerReleased="ic_menu_add_PointerReleased" />
+            <TextBlock x:Name="menu_create_tb" Text="Create Stream" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" FontFamily="Sitka Subheading" Foreground="#FF040036" Padding="0,5,0,0" FontSize="12" Margin="0,0,10,0" />
+            <TextBlock x:Name="menu_CurrentPage" Text="Featured Streams" RelativePanel.RightOf="ic_menu" RelativePanel.AlignVerticalCenterWith="ic_menu" Margin="15,0,0,0" FontFamily="Sitka Subheading" Foreground="#FF040036" Padding="0,5,0,0" FontSize="12" />
+            <Border RelativePanel.LeftOf="ic_menu_add" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Width="1" Background="#FFEAEAEA" Margin="0,0,30,0" />
+            <Border RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Height="5" >
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Gainsboro" Offset="0"/>
+                        <GradientStop Color="White" Offset="0.633"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+        </RelativePanel>
+        <ToggleSwitch x:Name="toggleButton" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="109" RelativePanel.Below="nav_panel" OffContent="My Favorites" OnContent="All Streams" Margin="10,0,0,0" />
+        <Frame x:Name="contentFrame" RelativePanel.Below="toggleButton" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" />
+        <RelativePanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Height="40" Background="#FF040036">
+            <Image Name="streamPlayerSkipForward"  RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Source="Assets/icons/ic_skipforward.png" Width="20" Height="20" Stretch="Fill" Margin="0,0,23,0" />
+            <Image Name="streanPlayerForward" RelativePanel.LeftOf="streamPlayerSkipForward" Source="Assets/icons/ic_fastforward.png" RelativePanel.AlignBottomWith="streamPlayerSkipForward" RelativePanel.AlignTopWith="streamPlayerSkipForward" Margin="0,0,23,0" Width="20" Height="20" Stretch="Fill"   />
+            <Image Name="streanPlayerPlay" RelativePanel.LeftOf="streanPlayerForward" Source="Assets/icons/ic_play_white.png" RelativePanel.AlignBottomWith="streamPlayerSkipForward" RelativePanel.AlignTopWith="streamPlayerSkipForward" Margin="0,0,23,0" Width="20" Height="20" Stretch="Fill"   />
+            <Image Name="streanPlayerRewind" RelativePanel.LeftOf="streanPlayerPlay" Source="Assets/icons/ic_rewind.png" RelativePanel.AlignBottomWith="streamPlayerSkipForward" RelativePanel.AlignTopWith="streamPlayerSkipForward" Margin="0,0,23,0" Width="20" Height="20" Stretch="Fill"   />
+            <Image Name="streanPlayerSkipBackward" RelativePanel.LeftOf="streanPlayerRewind" Source="Assets/icons/ic_skipbackward.png" RelativePanel.AlignBottomWith="streamPlayerSkipForward" RelativePanel.AlignTopWith="streamPlayerSkipForward" Margin="0,0,23,0" Width="20" Height="20" Stretch="Fill"   />
+            <Slider Name="streamPlayerDurationPosition"  RelativePanel.RightOf="streamPlayerAlbumArtwork" RelativePanel.LeftOf="streanPlayerSkipBackward" Margin="0,0,15,0" Foreground="#FF006EF1" Background="White" />
+
+            <Image Name="streamPlayerAlbumArtwork"  RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Source="Assets/kbust_cover.jpg" Margin="10" />
+            <TextBlock Text="Now Playing: " RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignHorizontalCenterWith="streamPlayerDurationPosition" Foreground="White" FontFamily="Palatino Linotype" FontSize="13.333" Margin="0,0,0,3"/>
+        </RelativePanel>
+    </RelativePanel>
+        
+    <RelativePanel x:Name="hamburger" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True" Background="White">
+    </RelativePanel>
+        
+                  <SplitView x:Name="splitView1" DisplayMode="CompactOverlay" CompactPaneLength="50" OpenPaneLength="150" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" BorderBrush="#FF2C2C2C" BorderThickness="0,0,1,0">
+                <SplitView.Pane>
+                    <StackPanel Background="White">
+                        <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
+                    Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="MenuButton1" FontFamily="Segoe MDL2 Assets" Content="&#xE825;"
+                    Width="50" Height="50" Background="Transparent"/>
+                            <TextBlock Text="Button 1" FontSize="18" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="MenuButton2" FontFamily="Segoe MDL2 Assets" Content="&#xE10F;"
+                        Width="50" Height="50" Background="Transparent"/>
+                            <TextBlock Text="Button 2" FontSize="18" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="MenuButton3" FontFamily="Segoe MDL2 Assets" Content="&#xE1D6;"
+                        Width="50" Height="50" Background="Transparent"/>
+                            <TextBlock Text="Button 3" FontSize="18" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+                </SplitView.Pane>
+                
+            </SplitView>
+
+    </RelativePanel>
+</Page>

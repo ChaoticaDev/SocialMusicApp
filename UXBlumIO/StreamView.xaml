@@ -1,0 +1,58 @@
+﻿<Page
+    x:Class="UXBlumIO.StreamView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UXBlumIO"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Image x:Name="streamPlayerBGImage" Source="Assets/Mariah-Carey-2015.jpg" Stretch="UniformToFill" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
+        <Rectangle RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Fill="#B212004D">
+            
+        </Rectangle>
+        <RelativePanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Height="0"/>
+
+        <FlipView FlowDirection="RightToLeft" Name="streamPlayerAlbumArtwork" Margin="100,100,0,0" Width="150" Height="150">
+            <FlipViewItem>
+                <Image x:Name="streamPlayerFlipVInfo" Source="Assets/mariah-carey-charmbracelet-wallpaper-3.jpg" Width="150" Height="150" Stretch="Fill" DoubleTapped="Image_DoubleTapped" />
+            </FlipViewItem>
+            <FlipViewItem>
+                <Grid Width="150" Height="150" Background="White">
+                    <TextBlock Text="Track Info" />
+                </Grid>
+            </FlipViewItem>
+        </FlipView>
+        <Button Height="30" Content="More Tracks" RelativePanel.Below="streamPlayerNPText" RelativePanel.AlignLeftWith="streamPlayerNPText" Margin="0" Background="#FFFFFFFF" Click="Button_Click" />
+        <TextBlock x:Name="streamPlayerAlbumArtistTitle" RelativePanel.AlignVerticalCenterWith="streamPlayerAlbumArtwork" RelativePanel.RightOf="streamPlayerAlbumArtwork" Margin="15,15,0,0" Text="Mariah Carey" Foreground="White" />
+        <TextBlock x:Name="streamPlayerAlbumTrackTitle" RelativePanel.Below="streamPlayerAlbumArtistTitle" RelativePanel.RightOf="streamPlayerAlbumArtwork" Margin="15,5,0,0" Text="Don't forget about us" Foreground="White" FontWeight="Bold" FontFamily="Palatino Linotype" FontSize="20" />
+        <TextBlock x:Name="streamPlayerAlbumAlbumTitle" RelativePanel.Below="streamPlayerAlbumTrackTitle" RelativePanel.RightOf="streamPlayerAlbumArtwork" Margin="15,5,0,0" Text="E=MC2" Foreground="#FFE2E2E2" />
+        <TextBlock x:Name="streamPlayerNPText" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" Text="Now Playing" Margin="0,25,25,10" Foreground="White" FontWeight="Bold" FontStyle="Italic" FontFamily="Palatino Linotype" FontSize="33.333" />
+        <Image x:Name="ic_like" Source="Assets/icons/ic_heart.png" Width="20" Height="20" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" Margin="0,0,20,10" />
+        <GridView x:Name="streamPlayerSimilarStreams" RelativePanel.Below="streamPlayerAlbumArtwork" RelativePanel.AlignLeftWith="streamPlayerAlbumArtwork" RelativePanel.AlignRightWith="" Margin="100,10,0,0" RelativePanel.AlignBottomWith="" RelativePanel.AlignRightWithPanel="True">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+
+            <GridViewItem>
+                <Image Source="Assets/jayrock.jpg" Width="50" Height="50" />
+            </GridViewItem>
+            <GridViewItem>
+                <Image Source="Assets/aguilera.jpg" Width="50" Height="50" />
+            </GridViewItem>
+            <GridViewItem>
+                <Image Source="Assets/michaeljackson.jpg" Width="50" Height="50" />
+            </GridViewItem>
+            <GridViewItem>
+                <Image Source="Assets/abstractguy.jpg" Width="50" Height="50" />
+            </GridViewItem>
+            <GridViewItem>
+                <Image Source="Assets/43.jpg" Width="50" Height="50" />
+            </GridViewItem>
+        </GridView>
+        <TextBlock Text="Similar Streams" RelativePanel.Below="streamPlayerSimilarStreams" Margin="100,0,0,0" Height="20" Foreground="White" RelativePanel.AlignLeftWith="streamPlayerAlbumArtwork" />
+    </RelativePanel>
+</Page>
