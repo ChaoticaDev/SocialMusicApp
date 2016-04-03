@@ -45,6 +45,8 @@ UXBlumIO Version:
 
 >> Categories
 
+>> KeenIO Analytics
+
 
 > The following features have been introduced, no longer available on master branch
 
