@@ -1,6 +1,6 @@
 <?php
 
-  $db = mysqli_connect("", "", "", "io_socialapp");
+  include("db.php");
 
 
 
