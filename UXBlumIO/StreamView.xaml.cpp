@@ -35,7 +35,10 @@ StreamView::StreamView()
 }
 
 void StreamView::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs^ e) {
-	UBERSNIP_TRACK^ track = dynamic_cast<UBERSNIP_TRACK^>(e->Parameter);
+	Windows::UI::Xaml::Interop::IBindableObservableVector^ param = dynamic_cast<Windows::UI::Xaml::Interop::IBindableObservableVector^>(e->Parameter);
+
+	this->rootPage = dynamic_cast<MainPage^>(param->GetAt(0));
+	UBERSNIP_TRACK^ track = dynamic_cast<UBERSNIP_TRACK^>(param->GetAt(1));
 
 	if (track != nullptr) {
 		this->streamPlayerAlbumArtistTitle->Text = track->Artist;

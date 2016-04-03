@@ -78,7 +78,7 @@ namespace UXBlumIO
 		void goBack(Platform::Object^ sender, Windows::UI::Core::BackRequestedEventArgs^ args) {
 			try {
 				Windows::UI::Core::SystemNavigationManager::GetForCurrentView()->AppViewBackButtonVisibility = Windows::UI::Core::AppViewBackButtonVisibility::Collapsed;
-				this->Frame->GoBack();
+				this->Frame->Navigate(MainPage::typeid, this->rootPage);
 			}
 			catch (Platform::DisconnectedException^ e) {
 				

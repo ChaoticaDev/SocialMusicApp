@@ -16,7 +16,6 @@ using namespace Windows::Foundation::Collections;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Controls::Primitives;
-using namespace Windows::UI::Xaml::Data;
 using namespace Windows::UI::Xaml::Input;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
@@ -28,22 +27,25 @@ MainPage::MainPage()
 
 	InitializeComponent();
 
-	UBERSNIP_TRACK^ track = ref new UBERSNIP_TRACK();
-	track->Artist = "K.Bust";
-	track->Title = "Don't wanna try";
-	track->SetImage("43.jpg");
-	this->tracks->Append(track);
-
-	this->loadTracks();
 
 }
 
-void MainPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs^ e) {
-	
+void MainPage::restoreTracks() {
 	this->contentFrame->Navigate(MyFavoritesStream::typeid, this);
+}
 
-	//return;
+void MainPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs^ e) {
 
+
+	MainPage^ returnPage = dynamic_cast<MainPage^>(e->Parameter);
+
+	if (returnPage != nullptr) {
+		this->AccountManager = returnPage->AccountManager;
+		this->toggleButton->IsOn = returnPage->StreamToggleSwitch;
+		this->tracks = returnPage->tracks;
+	}
+		
+	this->restoreTracks();
 }
 
 void UXBlumIO::MainPage::ic_menu_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
@@ -73,37 +75,196 @@ void UXBlumIO::MainPage::HamburgerButton_Click(Platform::Object^ sender, Windows
 }
 
 void MainPage::loadTracks() {
-	UberSnip::UBERSNIP_CLIENT* uCLIENT = new UberSnip::UBERSNIP_CLIENT();
+	UberSnip::UBERSNIP_CLIENT* UberSnipAPI = new UberSnip::UBERSNIP_CLIENT();
+
+	UberSnipAPI->Http->RequestURL = "http://api.ubersnip.com/tracks.php";
+	UberSnipAPI->Http->request();
+
+	int err = UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).find("__api_err");
+
+	if (err < 0) {
+		if (UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).length() < 3) {
+			return;
+		}
+	}
+
 	
-	uCLIENT->Http->RequestURL = "http://api.ubersnip.com/tracks.php";
-	uCLIENT->Http->request();
 
-
-
-	cJSON* tracks = cJSON_Parse(UberSnip::UTILS::STRING::StringToAscIIChars(uCLIENT->Client->BodyResponse).c_str());
+	cJSON* tracks = cJSON_Parse(UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).c_str());
 	tracks = cJSON_GetObjectItem(tracks, "tracks");
 	int *track_count = new int(cJSON_GetArraySize(tracks));
 	this->tracks->Clear();
 
 	for (int i = 0; i < *track_count; i++) {
+
+		//GO TO NEXT JSON TRACK OBJECT
 		cJSON* curr_track = tracks->child;
 		for (int m = 0; m < i; m++) {
 			curr_track = tracks->child->next;
 		}
 
-
+		//GET THE ID OF TRACK
 		Platform::String^ track_id = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "ID")->valuestring);
+
+		//GET TRACK TITLE
 		Platform::String^ track_title = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "title")->valuestring);
+
+		//GET TRACK COVER IMAGE
 		Platform::String^ track_cover = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "cover")->valuestring);
+
+		//GET TRACK ARTIST/OWNER USERNAME
 		Platform::String^ track_artist = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(curr_track, "user"), "username")->valuestring);
 
+
+		//CREATE A NEW TRACK
 		UBERSNIP_TRACK^ ubersnipTrack = ref new UBERSNIP_TRACK();
 		ubersnipTrack->ID = track_id;
 		ubersnipTrack->Title = track_title;
 		ubersnipTrack->Artist = track_artist;
+
+		//SETS THE IMAGE URL OF TRACK COVER
 		ubersnipTrack->SetImageURI(track_cover);
 
+		//ADD TO TRACK LIST
 		this->tracks->Append(ubersnipTrack);
 
 	}
+
+	if ( this->contentFrame != nullptr)
+	this->contentFrame->Navigate(MyFavoritesStream::typeid, this);
+
+}
+
+void MainPage::loadUserTracks(Platform::String^ user_id) {
+
+}
+
+void MainPage::loadUserFavTracks(Platform::String^ user_id) {
+
+	UberSnip::UBERSNIP_CLIENT* UberSnipAPI = new UberSnip::UBERSNIP_CLIENT();
+
+	UberSnipAPI->Http->RequestURL = "http://api.ubersnip.com/likes.php";
+	UberSnipAPI->Http->addParam("UID", user_id);
+	UberSnipAPI->Http->request();
+
+	cJSON* tracks = cJSON_Parse(UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).c_str());
+	tracks = cJSON_GetObjectItem(tracks, "tracks");
+	int *track_count = new int(cJSON_GetArraySize(tracks));
+	this->tracks->Clear();
+
+	for (int i = 0; i < *track_count; i++) {
+
+		//GO TO NEXT JSON TRACK OBJECT
+		cJSON* curr_track = tracks->child;
+		for (int m = 0; m < i; m++) {
+			curr_track = tracks->child->next;
+		}
+
+		//GET THE ID OF TRACK
+		Platform::String^ track_id = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "ID")->valuestring);
+
+		//GET TRACK TITLE
+		Platform::String^ track_title = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "title")->valuestring);
+
+		//GET TRACK COVER IMAGE
+		Platform::String^ track_cover = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "cover")->valuestring);
+
+		//GET TRACK ARTIST/OWNER USERNAME
+		Platform::String^ track_artist = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(curr_track, "user"), "username")->valuestring);
+
+
+		//CREATE A NEW TRACK
+		UBERSNIP_TRACK^ ubersnipTrack = ref new UBERSNIP_TRACK();
+		ubersnipTrack->ID = track_id;
+		ubersnipTrack->Title = track_title;
+		ubersnipTrack->Artist = track_artist;
+
+		//SETS THE IMAGE URL OF TRACK COVER
+		ubersnipTrack->SetImageURI(track_cover);
+
+		//ADD TO TRACK LIST
+		this->tracks->Append(ubersnipTrack);
+
+	}
+
+	this->contentFrame->Navigate(MyFavoritesStream::typeid, this);
+}
+void MainPage::loadMyTracks() {
+
+	//UBERSNIP API 0.4
+	UberSnip::UBERSNIP_CLIENT* UberSnipAPI = new UberSnip::UBERSNIP_CLIENT();
+
+	UberSnipAPI->Http->RequestURL = "http://api.ubersnip.com/tracks.php";
+	UberSnipAPI->Http->request();
+	//UBERSNIP API 0.4
+
+
+	cJSON* tracks = cJSON_Parse(UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).c_str());
+	
+	//GET THE TRACKS JSON OBJECT
+	tracks = cJSON_GetObjectItem(tracks, "tracks");
+
+	//GET NUMBER OF JSON PARSED TRACKS
+	int *track_count = new int(cJSON_GetArraySize(tracks));
+
+	//CLEAR TRACK LIST
+	this->tracks->Clear();
+
+	//LOOP THROUGH TRACKS PARSED AS JSON
+	for (int i = 0; i < *track_count; i++) {
+
+		//GO TO NEXT JSON OBJECT (OR TRACK)
+		cJSON* curr_track = tracks->child;
+		for (int m = 0; m < i; m++) {
+			curr_track = tracks->child->next;
+		}
+
+		//GET TRACK ID
+		Platform::String^ track_id = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "ID")->valuestring);
+
+		//GET TRACK TITLE
+		Platform::String^ track_title = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "title")->valuestring);
+
+		//GET TRACK COVER
+		Platform::String^ track_cover = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "cover")->valuestring);
+
+		//CREATE NEW TRACK
+		UBERSNIP_TRACK^ ubersnipTrack = ref new UBERSNIP_TRACK();
+		ubersnipTrack->ID = track_id;
+		ubersnipTrack->Title = track_title;
+		ubersnipTrack->SetImageURI(track_cover);
+
+		//ADD TRACK TO TRACKLIST
+		this->tracks->Append(ubersnipTrack);
+	}
+}
+
+void UXBlumIO::MainPage::toggleButton_Toggled(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+
+	//IF SHOWING ALL TRACKS
+	if (this->toggleButton->IsOn == true) {
+
+		// LOAD PUBLIC STREAM
+		this->loadTracks();
+	}
+	else {
+
+		//IF LOGGED IN
+		if (this->AccountManager->ActiveAccount != nullptr) {
+
+			//LOAD TRACKS FAVORITED BY USER
+			this->loadUserFavTracks(this->AccountManager->ActiveAccount->UID);
+		}
+		else {
+
+			//GO TO LOGIN PAGE
+			this->contentFrame->Navigate(LoginPage::typeid, this);
+		}
+	}
+}
+
+
+void UXBlumIO::MainPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
 }

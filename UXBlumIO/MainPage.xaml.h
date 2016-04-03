@@ -21,6 +21,7 @@ namespace UXBlumIO
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
 
+	[Windows::UI::Xaml::Data::Bindable]
 	public ref class UBERSNIP_ACCOUNT sealed {
 
 		Platform::String^ _Username;
@@ -41,12 +42,22 @@ namespace UXBlumIO
 		{
 			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri("ms-appx://UXBlumIO/Assets/" + path);
 			img = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+			OnPropertyChanged("Image");
 		}
 
 		void SetImageURI(Platform::String^ path, Windows::UI::Xaml::Media::ImageSource^ img)
 		{
 			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri(path);
 			img = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+			OnPropertyChanged("Image");
+		}
+
+		event PropertyChangedEventHandler^ _PropertyChanged;
+
+		void OnPropertyChanged(Platform::String^ propertyName)
+		{
+			PropertyChangedEventArgs^ pcea = ref new  PropertyChangedEventArgs(propertyName);
+			_PropertyChanged(this, pcea);
 		}
 	public:
 
@@ -57,18 +68,24 @@ namespace UXBlumIO
 
 		void login() {
 
-			UberSnip::UBERSNIP_CLIENT* uCLIENT = new UberSnip::UBERSNIP_CLIENT();
-			uCLIENT->Http->RequestURL = "http://api.ubersnip.com/login.php";
-			uCLIENT->Http->addParam("username", this->_Username);
-			uCLIENT->Http->addParam("password", this->_Password);
-			uCLIENT->Http->request();
+			UberSnip::UBERSNIP_CLIENT* UberSnipAPI = new UberSnip::UBERSNIP_CLIENT();
+			UberSnipAPI->Http->RequestURL = "http://api.ubersnip.com/login.php";
+			UberSnipAPI->Http->addParam("username", this->_Username);
+			UberSnipAPI->Http->addParam("password", this->_Password);
+			UberSnipAPI->Http->request();
 
-			int err = UberSnip::UTILS::STRING::StringToAscIIChars(uCLIENT->Client->BodyResponse).find("__api_err");
+			int err = UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).find("__api_err");
+
+			if (err < 0) {
+				if (UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).length() < 3) {
+					return;
+				}
+			}
 
 			if (err < 0) {
 				this->loggedIn = true;
 
-				cJSON* ubs_data = cJSON_Parse(UberSnip::UTILS::STRING::StringToAscIIChars(uCLIENT->Client->BodyResponse).c_str());
+				cJSON* ubs_data = cJSON_Parse(UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).c_str());
 
 				/*UBERSNIP_ACCOUNT^ myacc = UserByUsername(username);
 
@@ -83,7 +100,8 @@ namespace UXBlumIO
 				//this->_UID = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "uid")->valuestring);
 
 				this->SetImageURI( UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "avatar")->valuestring), this->_Image );
-				this->SetImageURI( UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "cover")->valuestring), this->_ImageCover );
+				this->SetImageURI(UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "cover")->valuestring), this->_ImageCover);
+				this->_UID = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "uid")->valuestring);
 				Platform::String^ bio = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "bio")->valuestring);
 
 				//this->_profile->SetAvatar(avatar);
@@ -165,6 +183,7 @@ namespace UXBlumIO
 
 	};
 
+	[Windows::Foundation::Metadata::WebHostHiddenAttribute]
 	public ref class UBERSNIP_ACCOUNTS_MANAGER sealed{
 		//ACCOUNTS LIST
 		Windows::UI::Xaml::Interop::IBindableObservableVector^ accounts;
@@ -222,7 +241,6 @@ namespace UXBlumIO
 	{
 		Windows::UI::Xaml::Interop::IBindableObservableVector^ tracks = ref new Platform::Collections::Vector<UBERSNIP_TRACK^>();
 		UBERSNIP_ACCOUNTS_MANAGER^ accManager = ref new UBERSNIP_ACCOUNTS_MANAGER();
-		
 
 	public:
 		MainPage();
@@ -237,12 +255,30 @@ namespace UXBlumIO
 			UBERSNIP_ACCOUNTS_MANAGER^ get() {
 				return this->accManager;
 			}
+
+			void set(UBERSNIP_ACCOUNTS_MANAGER^ val) {
+				this->accManager = val;
+			}
 		}
 
 		property Windows::UI::Xaml::Controls::Frame^ ContentFrame {
 			Windows::UI::Xaml::Controls::Frame^ get() {
 				return this->contentFrame;
 			}
+		}
+
+		property bool StreamToggleSwitch {
+			bool get() {
+				return this->toggleButton->IsOn;
+			}
+
+			void set(bool on) {
+				this->toggleButton->IsOn = on;
+			}
+		}
+
+		void FavTracks() {
+			this->loadUserFavTracks(this->AccountManager->ActiveAccount->UID);
 		}
 
 	protected:
@@ -252,5 +288,11 @@ namespace UXBlumIO
 		void ic_menu_add_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e);
 		void HamburgerButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void loadTracks();
+		void toggleButton_Toggled(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void loadUserTracks(Platform::String^ user_id);
+		void loadMyTracks();
+		void restoreTracks();
+		void loadUserFavTracks(Platform::String^ user_id);
+		void Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 	};
 }

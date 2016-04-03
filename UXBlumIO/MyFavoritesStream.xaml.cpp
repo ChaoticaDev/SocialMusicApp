@@ -30,8 +30,6 @@ MyFavoritesStream::MyFavoritesStream()
 	this->_trackList = ref new UBERSNIP_TRACKLIST();
 	//Windows::UI::Core::SystemNavigationManager::GetForCurrentView()->BackRequested += ref new Windows::Foundation::EventHandler<Windows::UI::Core::BackRequestedEventArgs^>(this, &MyFavoritesStream::GoBack);
 
-	UBERSNIP_TRACK^ uTrack = ref new UBERSNIP_TRACK();
-	this->TrackList->Tracks->Append(uTrack);
 }
 
 void MyFavoritesStream::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs^ e) {
@@ -44,7 +42,6 @@ void MyFavoritesStream::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationE
 
 	if (mp != nullptr) {
 		this->rootPage = mp;
-		this->TrackList->Tracks->Clear();
 		for (size_t i = 0; i < this->rootPage->TrackList->Size;  i++)
 			this->TrackList->Tracks->Append(mp->TrackList->GetAt(i));
 	}
@@ -56,13 +53,15 @@ void MyFavoritesStream::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationE
 
 }
 
-
 void UXBlumIO::MyFavoritesStream::gridView_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
 {
 	UBERSNIP_TRACK^ track = dynamic_cast<UBERSNIP_TRACK^>(gridView->SelectedItem);
 	
 	if (track != nullptr) {
-		this->rootPage->Frame->Navigate(StreamView::typeid, track);
+		Windows::UI::Xaml::Interop::IBindableObservableVector^ track_data = ref new Platform::Collections::Vector<Platform::Object^>;
+		track_data->Append(this->rootPage);
+		track_data->Append(track);
+		this->rootPage->Frame->Navigate(StreamView::typeid, track_data);
 	}
 	
 }

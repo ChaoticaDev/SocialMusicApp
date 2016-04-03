@@ -57,6 +57,16 @@ void UXBlumIO::LoginPage::loginButton_Click(Platform::Object^ sender, Windows::U
 		this->rootPage->AccountManager->ActiveAccount = myacc;
 
 	}
-		this->Frame->GoBack();
 	
+	if (this->rootPage->StreamToggleSwitch != true) {
+		this->rootPage->FavTracks();
+	}
+	
+}
+
+
+void UXBlumIO::LoginPage::Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	this->rootPage->StreamToggleSwitch = true;
+	this->Frame->Navigate(MyFavoritesStream::typeid, this->rootPage);
 }
