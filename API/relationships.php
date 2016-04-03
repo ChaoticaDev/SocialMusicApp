@@ -1,5 +1,5 @@
 <?php
-  $db = mysqli_connect("ubersnip.com", "psilowin1", "Psilo1992", "io_socialapp");
+  include("db.php");
 
 $sel = mysqli_query($db, "SELECT users.uid, users.username, users.avatar, users.cover, users.bio FROM relations join users on users.uid = relations.follower_id and relations.uid ='".$_GET['user_id']."' group by users.uid");
   $arr["relations"] = array();

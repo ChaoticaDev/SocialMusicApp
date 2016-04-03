@@ -1,5 +1,5 @@
 <?php
-  $db = mysqli_connect("ubersnip.com", "psilowin1", "Psilo1992", "io_socialapp");
+  include("db.php");
 
   $err = 0;
   if ( isset ($_GET['ID']) ){
