@@ -39,7 +39,7 @@ To setup the application to work on your own server, view the wiki: [`Getting St
 
 UXBlumIO Version:
 
-> The following features are not temporarily not available
+> The following features are temporarily unavailable
 
 >> Friends list (Followers/Following)
 
