@@ -46,6 +46,9 @@ void StreamView::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArg
 		this->streamPlayerAlbumTrackTitle->Text = track->Title;
 		this->streamPlayerFlipVInfo->Source = track->Image;
 		this->streamPlayerBGImage->Source = track->Image;
+
+		this->mediaElement->Source = ref new Windows::Foundation::Uri(track->FileName);
+		this->mediaElement->Play();
 	}
 }
 

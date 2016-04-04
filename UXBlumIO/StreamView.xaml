@@ -8,6 +8,7 @@
     mc:Ignorable="d">
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <MediaElement x:Name="mediaElement" />
         <Image x:Name="streamPlayerBGImage" Source="Assets/Mariah-Carey-2015.jpg" Stretch="UniformToFill" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" />
         <Rectangle RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Fill="#B212004D">
             
