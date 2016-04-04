@@ -1,5 +1,5 @@
 # SocialMusicApp
-Social Network Windows 10 app Managed C++.
+Social Network Windows 10 app (Managed C++).
 
 This social network / music store is geared towards those wanting to learn how to build a social network app (Windows 10 UWP), or those wanting to create their own Music Store.
 
