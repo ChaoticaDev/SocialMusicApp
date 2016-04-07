@@ -145,6 +145,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="external\KEENIOSDK_CLIENT.h" />
     <ClInclude Include="external\JSON\cJSON.h" />
     <ClInclude Include="LoginPage.xaml.h">
       <DependentUpon>LoginPage.xaml</DependentUpon>

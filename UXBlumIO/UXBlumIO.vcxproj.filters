@@ -29,6 +29,7 @@
     <ClCompile Include="StreamViewMoreItems.xaml.cpp" />
     <ClCompile Include="UBS_SDK.h" />
     <ClCompile Include="external\JSON\cJSON.cpp" />
+    <ClCompile Include="TrackDisplayPage.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -40,6 +41,8 @@
     <ClInclude Include="LoginPage.xaml.h" />
     <ClInclude Include="StreamViewMoreItems.xaml.h" />
     <ClInclude Include="external\JSON\cJSON.h" />
+    <ClInclude Include="TrackDisplayPage.xaml.h" />
+    <ClInclude Include="external\KEENIOSDK_CLIENT.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png">

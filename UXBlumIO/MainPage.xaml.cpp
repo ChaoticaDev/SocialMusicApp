@@ -44,6 +44,10 @@ void MainPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs^
 		this->toggleButton->IsOn = returnPage->StreamToggleSwitch;
 		this->tracks = returnPage->tracks;
 	}
+	else {
+		string dataParam[2] = { "app_event", ".LAUNCH" };
+		UberSnip::HELPER::KeenIO::SendData(App::KeenIOProjectID, "SOCIAL.APP", "app_event", ".LAUNCH");
+	}
 		
 	this->restoreTracks();
 }

@@ -62,8 +62,10 @@ void TrackDisplayPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEv
 		this->streamPlayerBGImage->Source = track->Image;*/
 
 		//this->mediaElement = this->rootPage->MediaPlayer;
-		//this->mediaElement->Source = ref new Windows::Foundation::Uri(track->FileName);
-		//this->mediaElement->Play();
+		this->mediaElement->Source = ref new Windows::Foundation::Uri(track->FileName);
+		this->mediaElement->Play();
+
+		UberSnip::HELPER::KeenIO::SendData(App::KeenIOProjectID, "SOCIAL.APP", "track_play", "https://ubersnip.com/snippet/" + track->ID);
 		
 		//LOAD TRACK COMMENTS
 		this->loadComments();
@@ -99,7 +101,8 @@ void UXBlumIO::TrackDisplayPage::Button_Click(Platform::Object^ sender, Windows:
 		this->richEditComment->Document->SetText(Windows::UI::Text::TextSetOptions::None, "");
 		UberSnipAPI->Http->addParam("message", UberSnip::UTILS::STRING::URLEncode(UberSnip::UTILS::STRING::StringToAscIIChars(message)));
 		UberSnipAPI->Http->request();
-
+		
+		
 		this->loadComments();
 	}
 }
