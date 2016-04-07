@@ -168,6 +168,9 @@
     <ClInclude Include="StreamViewMoreItems.xaml.h">
       <DependentUpon>StreamViewMoreItems.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="TrackDisplayPage.xaml.h">
+      <DependentUpon>TrackDisplayPage.xaml</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -191,6 +194,9 @@
     <Page Include="StreamViewMoreItems.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="TrackDisplayPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -203,6 +209,7 @@
     <Image Include="Assets\abstractguy.jpg" />
     <Image Include="Assets\aguilera.jpg" />
     <Image Include="Assets\icons\ic_fastforward.png" />
+    <Image Include="Assets\icons\ic_heart_red.png" />
     <Image Include="Assets\icons\ic_left_black.png" />
     <Image Include="Assets\icons\ic_pause.png" />
     <Image Include="Assets\icons\ic_play_black.png" />
@@ -258,6 +265,9 @@
     </ClCompile>
     <ClCompile Include="StreamViewMoreItems.xaml.cpp">
       <DependentUpon>StreamViewMoreItems.xaml</DependentUpon>
+    </ClCompile>
+    <ClCompile Include="TrackDisplayPage.xaml.cpp">
+      <DependentUpon>TrackDisplayPage.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="UBS_SDK.h" />
   </ItemGroup>

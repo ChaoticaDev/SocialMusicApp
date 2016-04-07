@@ -11,7 +11,7 @@
         <GridView ItemsSource="{x:Bind TrackList.Tracks}" SelectionChanged="gridView_SelectionChanged" ScrollViewer.IsDeferredScrollingEnabled="True" ScrollViewer.VerticalScrollMode="Enabled" ScrollViewer.VerticalScrollBarVisibility="Hidden" x:Name="gridView" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True" Padding="0,0,0,40">
             <GridView.Transitions>
                 <TransitionCollection>
-                    <EntranceThemeTransition IsStaggeringEnabled="True" AutomationProperties.Name="animstag1" FromVerticalOffset="400" FromHorizontalOffset="0" />
+                    <EntranceThemeTransition IsStaggeringEnabled="True" AutomationProperties.Name="animstag1" FromVerticalOffset="1000" FromHorizontalOffset="0" />
                 </TransitionCollection>
             </GridView.Transitions>
             <GridView.ItemTemplate>
@@ -20,118 +20,11 @@
                         <StackPanel>
                             <Image Source="{x:Bind Image}" Width="125" Height="125" Stretch="Fill" />
                             <TextBlock Text="{x:Bind Title}" FontWeight="Bold" />
-                            <TextBlock Text="{x:Bind Artist}" Foreground="#FFA6A6A6" />
+                            <TextBlock Text="{x:Bind Artist}" Foreground="#FFA6A6A6" TextWrapping="WrapWholeWords" />
                         </StackPanel>
                     </RelativePanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
-            
-            
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
-            <GridViewItem Margin="10" Padding="10,5">
-                <StackPanel>
-                    <Image Source="Assets/abstractguy.jpg" Width="125" Height="125" Stretch="Fill" />
-                    <TextBlock Text="K. Bust" FontWeight="Bold" />
-                    <TextBlock Text="Don't wanna try" Foreground="#FFA6A6A6" />
-                </StackPanel>
-            </GridViewItem>
 
         </GridView>
     </RelativePanel>

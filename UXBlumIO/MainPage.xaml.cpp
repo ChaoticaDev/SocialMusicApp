@@ -26,7 +26,9 @@ MainPage::MainPage()
 {
 
 	InitializeComponent();
-
+	GENERIC_ITEM^ item = ref new GENERIC_ITEM();
+	item->Title = "All";
+	this->Categories->Append(item);
 
 }
 void MainPage::restoreTracks() {

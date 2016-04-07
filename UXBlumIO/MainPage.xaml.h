@@ -21,14 +21,28 @@ namespace UXBlumIO
 	public ref class MainPage sealed
 	{
 		Windows::UI::Xaml::Interop::IBindableObservableVector^ tracks = ref new Platform::Collections::Vector<UBERSNIP_TRACK^>();
+		Windows::UI::Xaml::Interop::IBindableObservableVector^ categories = ref new Platform::Collections::Vector<GENERIC_ITEM^>();
+
 		UBERSNIP_ACCOUNTS_MANAGER^ accManager = ref new UBERSNIP_ACCOUNTS_MANAGER();
 
 	public:
 		MainPage();
 
+		property double PageWidth {
+			double get() {
+				return this->Frame->Width;
+			}
+		}
+
 		property Windows::UI::Xaml::Interop::IBindableObservableVector^ TrackList {
 			Windows::UI::Xaml::Interop::IBindableObservableVector^ get() {
 				return this->tracks;
+			}
+		}
+
+		property Windows::UI::Xaml::Interop::IBindableObservableVector^ Categories {
+			Windows::UI::Xaml::Interop::IBindableObservableVector^ get() {
+				return this->categories;
 			}
 		}
 
@@ -51,6 +65,12 @@ namespace UXBlumIO
 		property Windows::UI::Xaml::Controls::ComboBox^ AccountAddedUsers {
 			Windows::UI::Xaml::Controls::ComboBox^ get() {
 				return this->menu_create_tb;
+			}
+		}
+
+		property Windows::UI::Xaml::Controls::MediaElement^ MediaPlayer {
+			Windows::UI::Xaml::Controls::MediaElement^ get() {
+				return this->mediaElement;
 			}
 		}
 

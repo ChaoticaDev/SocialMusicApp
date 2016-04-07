@@ -126,6 +126,9 @@
     <Image Include="Assets\icons\ic_user_add.png">
       <Filter>Assets</Filter>
     </Image>
+    <Image Include="Assets\icons\ic_heart_red.png">
+      <Filter>Assets</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest" />
@@ -140,5 +143,6 @@
     <Page Include="StreamMoments.xaml" />
     <Page Include="StreamViewMoreItems.xaml" />
     <Page Include="LoginPage.xaml" />
+    <Page Include="TrackDisplayPage.xaml" />
   </ItemGroup>
 </Project>

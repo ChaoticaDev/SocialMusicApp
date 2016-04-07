@@ -6,6 +6,7 @@
 #include "pch.h"
 #include "StreamView.xaml.h"
 #include "MyFavoritesStream.xaml.h"
+#include "TrackDisplayPage.xaml.h"
 
 using namespace UXBlumIO;
 
@@ -42,8 +43,13 @@ void MyFavoritesStream::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationE
 
 	if (mp != nullptr) {
 		this->rootPage = mp;
-		for (size_t i = 0; i < this->rootPage->TrackList->Size;  i++)
-			this->TrackList->Tracks->Append(mp->TrackList->GetAt(i));
+		for (size_t i = 0; i < this->rootPage->TrackList->Size; i++)
+		{
+			UBERSNIP_TRACK^ tmptrack = dynamic_cast<UBERSNIP_TRACK^>(mp->TrackList->GetAt(i));
+			if (tmptrack->Active != Windows::UI::Xaml::Visibility::Collapsed) {
+				this->TrackList->Tracks->Append(mp->TrackList->GetAt(i));
+			}
+		}
 	}
 
 	int* x = 0;
@@ -61,7 +67,7 @@ void UXBlumIO::MyFavoritesStream::gridView_SelectionChanged(Platform::Object^ se
 		Windows::UI::Xaml::Interop::IBindableObservableVector^ track_data = ref new Platform::Collections::Vector<Platform::Object^>;
 		track_data->Append(this->rootPage);
 		track_data->Append(track);
-		this->rootPage->Frame->Navigate(StreamView::typeid, track_data);
+		this->rootPage->Frame->Navigate(TrackDisplayPage::typeid, track_data);
 	}
 	
 }

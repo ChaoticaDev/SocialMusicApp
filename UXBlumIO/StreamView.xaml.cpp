@@ -32,6 +32,7 @@ StreamView::StreamView()
 
 	}
 	Windows::UI::Core::SystemNavigationManager::GetForCurrentView()->BackRequested += ref new Windows::Foundation::EventHandler<Windows::UI::Core::BackRequestedEventArgs^>(this, &StreamView::goBack);
+
 }
 
 void StreamView::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs^ e) {

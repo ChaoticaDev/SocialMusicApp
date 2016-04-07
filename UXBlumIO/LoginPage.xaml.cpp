@@ -41,8 +41,8 @@ void UXBlumIO::LoginPage::loginButton_Click(Platform::Object^ sender, Windows::U
 {
 	UBERSNIP_ACCOUNT^ myacc = ref new UBERSNIP_ACCOUNT();
 
-	myacc->Username = "montraydavis";
-	myacc->Password = "montraydavis";
+	myacc->Username = this->inputLoginUsername->Text;
+	myacc->Password = this->inputLoginPassword->Password;
 	myacc->login();
 
 

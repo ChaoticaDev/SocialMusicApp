@@ -8,8 +8,13 @@
 #include "App.g.h"
 #include "external\JSON\cJSON.h"
 #include "UBS_SDK.h"
+#include <cctype>
+#include <iomanip>
+#include <sstream>
+#include <string>
 
 using namespace Windows::UI::Xaml::Data;
+using namespace std;
 namespace UXBlumIO
 {
 	/// <summary>
@@ -32,6 +37,52 @@ namespace UXBlumIO
 					Platform::String^ str = ref new Platform::String(wcstring);
 					delete[] wcstring;
 					return str;
+				}
+
+				static Platform::String^ URLEncode(const std::string &value) {
+					ostringstream escaped;
+					escaped.fill('0');
+					escaped << hex;
+
+					for (string::const_iterator i = value.begin(), n = value.end(); i != n; ++i) {
+						string::value_type c = (*i);
+
+						// Keep alphanumeric and other accepted characters intact
+						if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
+							escaped << c;
+							continue;
+						}
+
+						// Any other characters are percent-encoded
+						escaped << uppercase;
+						escaped << '%' << setw(2) << int((unsigned char)c);
+						escaped << nouppercase;
+					}
+
+					return StringFromAscIIChars(escaped.str());
+				}
+
+				static Platform::String^ url_encode(const std::string &value) {
+					ostringstream escaped;
+					escaped.fill('0');
+					escaped << hex;
+
+					for (string::const_iterator i = value.begin(), n = value.end(); i != n; ++i) {
+						string::value_type c = (*i);
+
+						// Keep alphanumeric and other accepted characters intact
+						if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
+							escaped << c;
+							continue;
+						}
+
+						// Any other characters are percent-encoded
+						escaped << uppercase;
+						escaped << '%' << setw(2) << int((unsigned char)c);
+						escaped << nouppercase;
+					}
+
+					return StringFromAscIIChars(escaped.str());
 				}
 
 				static Platform::String^ StringFromAscIIChars(std::string str_string)
@@ -63,6 +114,7 @@ namespace UXBlumIO
 			};
 
 		}
+
 
 
 		ref class CLIENT sealed {
@@ -390,6 +442,7 @@ namespace UXBlumIO
 			}
 
 		};
+
 	}
 
 	[Windows::UI::Xaml::Data::Bindable]
@@ -404,6 +457,7 @@ namespace UXBlumIO
 		Windows::UI::Xaml::Media::ImageSource^ _ImageCover;
 
 		bool loggedIn;
+		bool err = false;
 
 		Windows::UI::Xaml::Interop::IBindableObservableVector^ tracks;
 
@@ -449,8 +503,12 @@ namespace UXBlumIO
 
 			if (err < 0) {
 				if (UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).length() < 3) {
+					this->err = true;
 					return;
 				}
+			}
+			else {
+				this->err = true;
 			}
 
 			if (err < 0) {
@@ -469,10 +527,9 @@ namespace UXBlumIO
 
 				this->_Token = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(ubs_data, "token")->valuestring);
 				//this->_UID = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "uid")->valuestring);
-
-				this->SetImageURI(UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "avatar")->valuestring), this->_Image);
-				this->SetImageURI(UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "cover")->valuestring), this->_ImageCover);
-				this->_UID = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "uid")->valuestring);
+				this->SetImageURI("https://ubersnip.com//thumb.php?src=" + UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "image")->valuestring) + "&t=m&w=112&h=112", this->_Image);
+				this->SetImageURI("https://ubersnip.com//thumb.php?src=" + UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "cover")->valuestring) + "&t=m&w=112&h=112", this->_ImageCover);
+				this->_UID = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "idu")->valuestring);
 				Platform::String^ bio = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "bio")->valuestring);
 
 				//this->_profile->SetAvatar(avatar);
@@ -494,6 +551,12 @@ namespace UXBlumIO
 
 			void set(Platform::String^ uname) {
 				this->_Username = uname;
+			}
+		}
+
+		property bool Error {
+			bool get() {
+				return this->err;
 			}
 		}
 
@@ -608,6 +671,216 @@ namespace UXBlumIO
 		}
 	};
 
+
+
+
+
+	[Windows::UI::Xaml::Data::Bindable]
+	public ref class UBERSNIP_LIKE sealed {
+	private:
+		Platform::String^ _ID;
+		Platform::String^ _UID;
+		Platform::String^ _OWNER;
+		Windows::UI::Xaml::Media::ImageSource^ _Image;
+
+		event PropertyChangedEventHandler^ _PropertyChanged;
+
+		void OnPropertyChanged(Platform::String^ propertyName)
+		{
+			PropertyChangedEventArgs^ pcea = ref new  PropertyChangedEventArgs(propertyName);
+			_PropertyChanged(this, pcea);
+		}
+	public:
+		UBERSNIP_LIKE() {
+
+		};
+
+		property Platform::String^ ID {
+			Platform::String^ get() {
+				return this->_ID;
+			}
+
+			void set(Platform::String^ val) {
+				this->_ID = val;
+				OnPropertyChanged("ID");
+			}
+		}
+
+		property Platform::String^ Owner {
+			Platform::String^ get() {
+				return this->_OWNER;
+			}
+
+			void set(Platform::String^ val) {
+				this->_OWNER = val;
+				OnPropertyChanged("Owner");
+			}
+		}
+
+		property Platform::String^ OwnerID {
+			Platform::String^ get() {
+				return this->_UID;
+			}
+
+			void set(Platform::String^ val) {
+				this->_UID = val;
+				OnPropertyChanged("OwnerID");
+			}
+		}
+
+		//Image
+		property Windows::UI::Xaml::Media::ImageSource^ Image
+		{
+			Windows::UI::Xaml::Media::ImageSource^ get()
+			{
+				return _Image;
+			}
+			void set(Windows::UI::Xaml::Media::ImageSource^ value)
+			{
+				_Image = value;
+				OnPropertyChanged("Image");
+			}
+		}
+
+		void SetImage(Platform::String^ path)
+		{
+			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri("ms-appx://UXBlumIO/Assets/" + path);
+			_Image = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+		}
+
+		void SetImageURI(Platform::String^ path)
+		{
+			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri(path);
+			_Image = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+		}
+	};
+
+	[Windows::Foundation::Metadata::WebHostHiddenAttribute]
+	public ref class UBERSNIP_LIKELIST sealed {
+	private:
+		Windows::UI::Xaml::Interop::IBindableObservableVector^ likes = ref new Platform::Collections::Vector<UBERSNIP_LIKE^>();
+
+	public:
+		UBERSNIP_LIKELIST() {
+		}
+
+		property Windows::UI::Xaml::Interop::IBindableObservableVector^ Likes {
+			Windows::UI::Xaml::Interop::IBindableObservableVector^ get() {
+				return this->likes;
+			}
+		}
+	};
+
+
+	[Windows::UI::Xaml::Data::Bindable]
+	public ref class UBERSNIP_COMMENT sealed {
+	private:
+		Platform::String^ _ID;
+		Platform::String^ _OWNER;
+		Platform::String^ _UID;
+		Platform::String^ _commentText;
+		Windows::UI::Xaml::Media::ImageSource^ _Image;
+
+		event PropertyChangedEventHandler^ _PropertyChanged;
+
+		void OnPropertyChanged(Platform::String^ propertyName)
+		{
+			PropertyChangedEventArgs^ pcea = ref new  PropertyChangedEventArgs(propertyName);
+			_PropertyChanged(this, pcea);
+		}
+	public:
+		UBERSNIP_COMMENT() {
+
+		};
+
+		property Platform::String^ ID {
+			Platform::String^ get() {
+				return this->_ID;
+			}
+
+			void set(Platform::String^ val) {
+				this->_ID = val;
+				OnPropertyChanged("ID");
+			}
+		}
+
+		property Platform::String^ Owner {
+			Platform::String^ get() {
+				return this->_OWNER;
+			}
+
+			void set(Platform::String^ val) {
+				this->_OWNER = val;
+				OnPropertyChanged("Owner");
+			}
+		}
+
+		property Platform::String^ OwnerID {
+			Platform::String^ get() {
+				return this->_UID;
+			}
+
+			void set(Platform::String^ val) {
+				this->_UID = val;
+				OnPropertyChanged("OwnerID");
+			}
+		}
+
+		property Platform::String^ CommentText {
+			Platform::String^ get() {
+				return this->_commentText;
+			}
+
+			void set(Platform::String^ val) {
+				this->_commentText = val;
+				OnPropertyChanged("CommentText");
+			}
+		}
+
+		//Image
+		property Windows::UI::Xaml::Media::ImageSource^ Image
+		{
+			Windows::UI::Xaml::Media::ImageSource^ get()
+			{
+				return _Image;
+			}
+			void set(Windows::UI::Xaml::Media::ImageSource^ value)
+			{
+				_Image = value;
+				OnPropertyChanged("Image");
+			}
+		}
+
+		void SetImage(Platform::String^ path)
+		{
+			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri("ms-appx://UXBlumIO/Assets/" + path);
+			_Image = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+		}
+
+		void SetImageURI(Platform::String^ path)
+		{
+			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri(path);
+			_Image = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+		}
+	};
+
+	[Windows::Foundation::Metadata::WebHostHiddenAttribute]
+	public ref class UBERSNIP_COMMENTLIST sealed {
+	private:
+		Windows::UI::Xaml::Interop::IBindableObservableVector^ comments;
+
+	public:
+		UBERSNIP_COMMENTLIST() {
+			comments = ref new Platform::Collections::Vector<UBERSNIP_COMMENT^>();
+		}
+
+		property Windows::UI::Xaml::Interop::IBindableObservableVector^ Comments {
+			Windows::UI::Xaml::Interop::IBindableObservableVector^ get() {
+				return this->comments;
+			}
+		}
+	};
+
 	[Windows::UI::Xaml::Data::Bindable]
 	public ref class UBERSNIP_TRACK sealed {
 	private:
@@ -627,6 +900,7 @@ namespace UXBlumIO
 		Platform::String^ _filesize;
 		Platform::String^ _creationTime;
 		Windows::UI::Xaml::Media::ImageSource^ _Image;
+		Windows::UI::Xaml::Visibility _visible = Windows::UI::Xaml::Visibility::Visible;
 
 		event PropertyChangedEventHandler^ _PropertyChanged;
 
@@ -647,6 +921,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_ID = val;
+				OnPropertyChanged("ID");
 			}
 		}
 
@@ -657,6 +932,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_uid = val;
+				OnPropertyChanged("UID");
 			}
 		}
 
@@ -667,6 +943,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_artist = val;
+				OnPropertyChanged("Artist");
 			}
 		}
 
@@ -677,6 +954,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_record = val;
+				OnPropertyChanged("Record");
 			}
 		}
 
@@ -687,6 +965,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_release = val;
+				OnPropertyChanged("Release");
 			}
 		}
 
@@ -697,6 +976,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_album = val;
+				OnPropertyChanged("Album");
 			}
 		}
 
@@ -707,6 +987,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_creationTime = val;
+				OnPropertyChanged("CreationTime");
 			}
 		}
 
@@ -717,6 +998,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_name = val;
+				OnPropertyChanged("Name");
 			}
 		}
 
@@ -727,6 +1009,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_tags = val;
+				OnPropertyChanged("Tags");
 			}
 		}
 
@@ -738,6 +1021,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_title = val;
+				OnPropertyChanged("Title");
 			}
 		}
 
@@ -749,6 +1033,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_description = val;
+				OnPropertyChanged("Description");
 			}
 		}
 
@@ -760,6 +1045,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_filename = val;
+				OnPropertyChanged("FileName");
 			}
 		}
 
@@ -771,6 +1057,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_views = val;
+				OnPropertyChanged("Views");
 			}
 		}
 
@@ -781,6 +1068,7 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_filesize = val;
+				OnPropertyChanged("FileSizeInBytes");
 			}
 		}
 
@@ -792,6 +1080,18 @@ namespace UXBlumIO
 
 			void set(Platform::String^ val) {
 				this->_likes = val;
+				OnPropertyChanged("Likes");
+			}
+		}
+
+		//IS TRACK VISIBLE
+		property Windows::UI::Xaml::Visibility Active {
+			Windows::UI::Xaml::Visibility get() {
+				return this->_visible;
+			}
+
+			void set(Windows::UI::Xaml::Visibility val){
+				this->_visible = val;
 			}
 		}
 
@@ -838,6 +1138,94 @@ namespace UXBlumIO
 			}
 		}
 	};
+
+	[Windows::UI::Xaml::Data::Bindable]
+	public ref class GENERIC_ITEM sealed {
+	private:
+		Platform::String^ _title;
+		Platform::String^ _description;
+		Windows::UI::Xaml::Media::ImageSource^ _Image;
+
+		event PropertyChangedEventHandler^ _PropertyChanged;
+
+		void OnPropertyChanged(Platform::String^ propertyName)
+		{
+			PropertyChangedEventArgs^ pcea = ref new  PropertyChangedEventArgs(propertyName);
+			_PropertyChanged(this, pcea);
+		}
+	public:
+		GENERIC_ITEM() {
+
+		};
+
+		property Platform::String^ Title {
+			Platform::String^ get() {
+				return this->_title;
+			}
+
+			void set(Platform::String^ val) {
+				this->_title = val;
+				OnPropertyChanged("Title");
+			}
+		}
+
+		property Platform::String^ Description {
+			Platform::String^ get() {
+				return this->_description;
+			}
+
+			void set(Platform::String^ val) {
+				this->_description = val;
+				OnPropertyChanged("Description");
+			}
+		}
+
+		void SetImage(Platform::String^ path)
+		{
+			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri(path);
+			_Image = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+		}
+
+	};
+
+	[Windows::Foundation::Metadata::WebHostHiddenAttribute]
+	public ref class GENERIC_DATA sealed {
+	private:
+		Windows::UI::Xaml::Interop::IBindableObservableVector^ items;
+
+	public:
+		GENERIC_DATA() {
+			items = ref new Platform::Collections::Vector<GENERIC_ITEM^>();
+		}
+
+		property Windows::UI::Xaml::Interop::IBindableObservableVector^ Items {
+			Windows::UI::Xaml::Interop::IBindableObservableVector^ get() {
+				return this->items;
+			}
+		}
+	};
+
+	namespace UberSnip {
+		namespace HELPER {
+
+			public ref class Accounts sealed{
+
+
+			public :
+				static UBERSNIP_ACCOUNT^ login(Platform::String^ username, Platform::String^ password) {
+					UBERSNIP_ACCOUNT^ myacc;
+					myacc->Username = username;
+					myacc->Password = password;
+					myacc->login();
+					return myacc;
+				}
+
+				Accounts() {
+
+				}
+			};
+		}
+	}
 
 	ref class App sealed
 	{

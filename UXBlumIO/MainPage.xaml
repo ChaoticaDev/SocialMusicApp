@@ -8,7 +8,7 @@
     mc:Ignorable="d" Loaded="Page_Loaded">
 
     <RelativePanel>
-
+        <MediaElement x:Name="mediaElement" />
         <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.AlignLeftWithPanel="True" Margin="50,0,0,0"  RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
             <RelativePanel x:Name="nav_panel" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" Height="40">
                 <Image x:Name="ic_menu" Source="Assets/ic_menu.png" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Width="15" Height="15" Margin="10,0,0,0" PointerReleased="ic_menu_PointerReleased" Visibility="Collapsed" />
@@ -25,11 +25,15 @@
                     </Border.Background>
                 </Border>
             </RelativePanel>
-            <ComboBox x:Name="menu_create_tb" RelativePanel.AlignRightWithPanel="True" SelectedIndex="0" Height="25" RelativePanel.RightOf="toggleButton" RelativePanel.AlignTopWith="" RelativePanel.AlignBottomWith="toggleButton">
-                <TextBlock Text="Categories" FontSize="10"/>
+            <ComboBox ItemsSource="{Binding Categories}" x:Name="menu_create_tb" RelativePanel.AlignRightWithPanel="True" Height="25" RelativePanel.RightOf="toggleButton" RelativePanel.AlignTopWith="" RelativePanel.AlignBottomWith="toggleButton">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="local:GENERIC_ITEM">
+                        <TextBlock Text="hi" Foreground="Black" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
             </ComboBox>
             <ToggleSwitch x:Name="toggleButton" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="109" RelativePanel.Below="nav_panel" OffContent="My Favorites" OnContent="All Streams" Margin="10,0,0,0" IsOn="True" Toggled="toggleButton_Toggled" />
-            <Frame x:Name="contentFrame" RelativePanel.Below="toggleButton" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" />
+            <Frame x:Name="contentFrame" RelativePanel.Below="toggleButton" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="0,5,0,0" />
             <RelativePanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Height="25" Background="#CC040036">
                 <Image Name="streamPlayerSkipForward"  RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Source="Assets/icons/ic_skipforward.png" Width="15" Height="15" Stretch="Fill" Margin="0,0,23,0" />
                 <Image Name="streanPlayerForward" RelativePanel.LeftOf="streamPlayerSkipForward" Source="Assets/icons/ic_fastforward.png" RelativePanel.AlignBottomWith="streamPlayerSkipForward" RelativePanel.AlignTopWith="streamPlayerSkipForward" Margin="0,0,23,0" Width="15" Height="15" Stretch="Fill"   />
