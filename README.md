@@ -5,6 +5,8 @@
 
 #### Current Feature List
 
+> KeenIO Analytics
+
 > Basic API (php)
 
 > API Integration (C++)
