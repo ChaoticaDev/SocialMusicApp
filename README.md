@@ -13,11 +13,13 @@
 
 > Public Stream
 
-> Likes stream
+> Likes Stream
+
+> Track Comments
 
 > Login Manager
 
-> Multiple-Account sessions
+> Multiple-Account Sessions
 
 > Simple token based authentication initiated
 
