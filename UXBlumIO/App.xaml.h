@@ -1711,7 +1711,8 @@ namespace UXBlumIO
 
 
 			public :
-				/*static Platform::String^ post_comment(Platform::String^ token, Platform::String^ track_id, Platform::String^ message) {
+				static void post_comment(Platform::String^ token, Platform::String^ track_id, Platform::String^ message) {
+					
 					UberSnip::UBERSNIP_CLIENT* UberSnipAPI = new UberSnip::UBERSNIP_CLIENT();
 
 					UberSnipAPI->Http->RequestURL = "http://api.ubersnip.com/request/add_comment.php";
@@ -1720,12 +1721,35 @@ namespace UXBlumIO
 					UberSnipAPI->Http->addParam("track_id", track_id);
 					UberSnipAPI->Http->addParam("message", UberSnip::UTILS::STRING::URLEncode(UberSnip::UTILS::STRING::StringToAscIIChars(message)));
 					UberSnipAPI->Http->request();
-
-					return UberSnipAPI->Client->BodyResponse;
-				}*/
+				}
 
 				Comments() {
 
+				}
+			};
+
+			public ref class LocalStorage sealed {
+				static Platform::Object^ ReadProperty(Platform::String^ s) {
+
+
+					Windows::Storage::ApplicationDataContainer^ localSettings =
+						Windows::Storage::ApplicationData::Current->LocalSettings;
+					Windows::Storage::StorageFolder^ localFolder =
+						Windows::Storage::ApplicationData::Current->LocalFolder;
+
+
+					return localSettings->Values->Lookup(s);
+				}
+
+				static void WriteProperty(Platform::String^ key, Platform::Object^ data) {
+
+					Windows::Storage::ApplicationDataContainer^ localSettings =
+						Windows::Storage::ApplicationData::Current->LocalSettings;
+					Windows::Storage::StorageFolder^ localFolder =
+						Windows::Storage::ApplicationData::Current->LocalFolder;
+
+					Platform::Object^ mdata = dynamic_cast<Platform::String^>(data);
+					localSettings->Values->Insert(key, mdata);
 				}
 			};
 		}
