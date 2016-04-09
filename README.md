@@ -1,4 +1,4 @@
-##Documentation : Checkout the [wiki](wiki)
+##Documentation : Checkout the [wiki](https://github.com/UberSnip/SocialMusicApp/wiki)
 
 ![XBlumIO Theme](https://github.com/UberSnip/SocialMusicApp/blob/UXBlumIO/UXBlumIO/screen_shots/ss_main.gif?raw=true)
 
