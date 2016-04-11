@@ -205,7 +205,7 @@
                         <TextBlock Text="{x:Bind Track.Title}" />
 
                         <TextBlock Text="People who like this track" Margin="0,15,0,0" />
-                        <GridView x:Name="gridViewLikes" MaxHeight="60" ItemsSource="{x:Bind Likes}">
+                        <GridView x:Name="gridViewLikes" MaxHeight="60" SelectionChanged="gridViewLikes_SelectionChanged"  ItemsSource="{x:Bind Likes}">
                             <GridView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <ItemsWrapGrid Orientation="Vertical"/>

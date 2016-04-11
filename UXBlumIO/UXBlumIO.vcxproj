@@ -172,6 +172,9 @@
     <ClInclude Include="TrackDisplayPage.xaml.h">
       <DependentUpon>TrackDisplayPage.xaml</DependentUpon>
     </ClInclude>
+    <ClInclude Include="UserProfilePage.xaml.h">
+      <DependentUpon>UserProfilePage.xaml</DependentUpon>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -196,6 +199,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TrackDisplayPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserProfilePage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -271,6 +277,9 @@
       <DependentUpon>TrackDisplayPage.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="UBS_SDK.h" />
+    <ClCompile Include="UserProfilePage.xaml.cpp">
+      <DependentUpon>UserProfilePage.xaml</DependentUpon>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

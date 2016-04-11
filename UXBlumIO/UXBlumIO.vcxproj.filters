@@ -147,5 +147,6 @@
     <Page Include="StreamViewMoreItems.xaml" />
     <Page Include="LoginPage.xaml" />
     <Page Include="TrackDisplayPage.xaml" />
+    <Page Include="UserProfilePage.xaml" />
   </ItemGroup>
 </Project>

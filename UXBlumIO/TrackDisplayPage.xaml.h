@@ -7,6 +7,7 @@
 
 #include "TrackDisplayPage.g.h"
 #include "MainPage.xaml.h"
+#include "UserProfilePage.xaml.h"
 
 namespace UXBlumIO
 {
@@ -58,6 +59,7 @@ namespace UXBlumIO
 		void goBack(Platform::Object^ sender, Windows::UI::Core::BackRequestedEventArgs^ args) {
 			try {
 				Windows::UI::Core::SystemNavigationManager::GetForCurrentView()->AppViewBackButtonVisibility = Windows::UI::Core::AppViewBackButtonVisibility::Collapsed;
+
 				this->Frame->Navigate(MainPage::typeid, this->rootPage);
 			}
 			catch (Platform::DisconnectedException^ e) {
@@ -194,5 +196,6 @@ namespace UXBlumIO
 		void Button_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void Button_Click_1(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void Button_Click_2(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void gridViewLikes_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e);
 };
 }

@@ -24,6 +24,8 @@ namespace UXBlumIO
 		Windows::UI::Xaml::Interop::IBindableObservableVector^ categories = ref new Platform::Collections::Vector<GENERIC_ITEM^>();
 
 		UBERSNIP_ACCOUNTS_MANAGER^ accManager = ref new UBERSNIP_ACCOUNTS_MANAGER();
+		KeenIOAPI::KEENIO_PROJECT^ keen_project = ref new KeenIOAPI::KEENIO_PROJECT();
+		
 
 	public:
 		MainPage();

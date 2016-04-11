@@ -148,3 +148,20 @@ void UXBlumIO::TrackDisplayPage::Button_Click_2(Platform::Object^ sender, Window
 	}
 
 }
+
+
+void UXBlumIO::TrackDisplayPage::gridViewLikes_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
+{
+	UBERSNIP_LIKE^ like = dynamic_cast<UBERSNIP_LIKE^>(this->gridViewLikes->SelectedItem);
+
+	if (like != nullptr) {
+		UBERSNIP_USER^ user = UberSnip::HELPER::Accounts::getUserData(like->OwnerID, "UID");
+
+		Windows::UI::Xaml::Interop::IBindableObservableVector^ params = ref new Platform::Collections::Vector<Platform::Object^>();
+		params->Append(this->rootPage);
+		params->Append(user);
+		params->Append(this->Track);
+
+		this->Frame->Navigate(UserProfilePage::typeid, params);
+	}
+}

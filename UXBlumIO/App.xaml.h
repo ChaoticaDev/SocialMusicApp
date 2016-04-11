@@ -13,6 +13,11 @@
 #include <sstream>
 #include <string>
 
+#define _StringFromAscIIChars(x) UberSnip::UTILS::STRING::StringFromAscIIChars(x)
+#define _String(x) UberSnip::UTILS::STRING::StringFromAscIIChars(x)
+#define _StringToAscIIChars(x) UberSnip::UTILS::STRING::StringToAscIIChars(x).c_str()
+#define _string(x) UberSnip::UTILS::STRING::StringToAscIIChars(x).c_str()
+
 using namespace Windows::UI::Xaml::Data;
 using namespace std;
 namespace UXBlumIO
@@ -452,7 +457,8 @@ namespace UXBlumIO
 
 	}
 
-	namespace KeenIO_API{
+	namespace KeenIOAPI{
+
 
 		public ref class CLIENT sealed {
 
@@ -870,22 +876,451 @@ namespace UXBlumIO
 
 	};
 
-	class KEENIO_CLIENT {
+		public ref class KEENIO_GENERIC_PROPERTY sealed{
+			Platform::String^ _property;
+			Platform::String^ _value;
+		public:
+			KEENIO_GENERIC_PROPERTY() {
 
-	public:
-		HTTP^ Http = ref new HTTP();
-		CLIENT^ Client = ref new CLIENT();
+			}
+
+			property Platform::String^ PropertyName {
+				Platform::String^ get() {
+					return this->_property;
+				}
+
+				void set(Platform::String^ val) {
+					this->_property = val;
+				}
+			}
+
+			property Platform::String^ PropertyValue {
+				Platform::String^ get() {
+					return this->_value;
+				}
+
+				void set(Platform::String^ val) {
+					this->_value = val;
+				}
+			}
+		};
+
+		public ref class KEENIO_EVENT sealed {
+			Platform::String^ _name;
+			Windows::UI::Xaml::Interop::IBindableObservableVector^ _properties = ref new Platform::Collections::Vector<KEENIO_GENERIC_PROPERTY^>();
+			Platform::String^ _url;
+
+			cJSON* toJSON() {
+				cJSON* root;
+
+				Platform::String^ _json_body = "\"properties\":{";
+
+				for (size_t i = 0; i < this->_properties->Size; i++) {
+					KEENIO_GENERIC_PROPERTY^ prop = dynamic_cast<KEENIO_GENERIC_PROPERTY^>(this->_properties->GetAt(i));
+					_json_body += i == 0 ? "\"" + prop->PropertyName + "\":\"" + prop->PropertyValue + "\"" : ", \"" + prop->PropertyName + "\":\"" + prop->PropertyValue + "\"";
+				}
+
+				_json_body += "}";
+
+				return root;
+			}
+		public:
+			KEENIO_EVENT() {
+			}
+
+			property Platform::String^ Name {
+				Platform::String^ get() {
+					return this->_name;
+				}
+
+				void set(Platform::String^ val) {
+					this->_name = val;
+				}
+			}
+
+			property Platform::String^ URL {
+				Platform::String^ get() {
+					return this->_url;
+				}
+
+				void set(Platform::String^ val) {
+					this->_url = val;
+				}
+			}
+
+			property Windows::UI::Xaml::Interop::IBindableObservableVector^ Properties {
+				Windows::UI::Xaml::Interop::IBindableObservableVector^ get() {
+					return this->_properties;
+				}
+			}
+		};
+		
+		class KEENIO_CLIENT {
+
+		public:
+			HTTP^ Http = ref new HTTP();
+			CLIENT^ Client = ref new CLIENT();
 
 
 
-		KEENIO_CLIENT() {
-			this->Client->http = ref new HTTP();
-			dynamic_cast<HTTP^>(this->Client->http)->SDKClient = this->Client;
-			this->Http = dynamic_cast<HTTP^>(this->Client->http);
+			KEENIO_CLIENT() {
+				this->Client->http = ref new HTTP();
+				dynamic_cast<HTTP^>(this->Client->http)->SDKClient = this->Client;
+				this->Http = dynamic_cast<HTTP^>(this->Client->http);
+			}
+
+		};
+
+		public ref class KEENIO_PROJECT sealed{
+			Platform::String^ _events_url;
+			Windows::UI::Xaml::Interop::IBindableObservableVector^ _events = ref new Platform::Collections::Vector<KEENIO_EVENT^>();
+			Platform::String^ _id;
+			Platform::String^ _org_id;
+			Platform::String^ _name;
+			Platform::String^ _queries_url;
+			Platform::String^ _partners_url;
+			Platform::String^ _url;
+
+			Platform::String^ _master_key;
+			Platform::String^ _write_key;
+			Platform::String^ _read_key;
+
+			bool verified = false;
+			bool error = false;
+
+		public:
+			KEENIO_PROJECT() {
+				
+			}
+
+			void LoadProject() {
+				KEENIO_CLIENT * UberSnipAPI = new KEENIO_CLIENT();
+
+				UberSnipAPI->Http->RequestURL = "https://api.keen.io/3.0/projects/" + this->_id;
+				UberSnipAPI->Http->addParam("api_key", this->MasterKey);
+
+				UberSnipAPI->Http->request();
+
+
+				cJSON* response = cJSON_Parse(_StringToAscIIChars(UberSnipAPI->Client->BodyResponse));
+
+				cJSON* arr_events ;
+
+				try {
+					arr_events = cJSON_GetObjectItem(response, "events");
+				}
+				catch (std::exception_ptr e) {
+					this->verified = false;
+					this->error = true;
+					return;
+				}
+
+				for (cJSON* c_event = arr_events->child; c_event != nullptr; c_event = c_event->next) {
+					KEENIO_EVENT^ k_event = ref new KEENIO_EVENT();
+					k_event->Name = _String(cJSON_GetObjectItem(c_event, "name")->valuestring);
+					k_event->URL = _String(cJSON_GetObjectItem(c_event, "url")->valuestring);
+					this->_events->Append(k_event);
+				}
+
+				this->_name = _String(cJSON_GetObjectItem(response, "name")->valuestring);
+				this->_org_id = _String(cJSON_GetObjectItem(response, "organization_id")->valuestring);
+				this->_partners_url = _String(cJSON_GetObjectItem(response, "partners_url")->valuestring);
+				this->_queries_url = _String(cJSON_GetObjectItem(response, "queries_url")->valuestring);
+				this->_url = _String(cJSON_GetObjectItem(response, "url")->valuestring);
+
+				this->verified = true;
+				this->error = false;
+			}
+
+			void SentEvent(Platform::String^ collection, Platform::String^ event_name, Platform::String^ event_property) {
+
+				if (!this->verified) {return;}
+
+				KeenIOAPI::KEENIO_CLIENT * UberSnipAPI = new KeenIOAPI::KEENIO_CLIENT();
+
+				UberSnipAPI->Http->RequestURL = "https://api.keen.io/3.0/projects/" + this->_id + "/events/" + collection;
+				UberSnipAPI->Http->addParam("api_key", this->MasterKey);
+
+				UberSnipAPI->Http->addDataParam("data", event_name, event_property);
+				UberSnipAPI->Http->request();
+			}
+
+			property Platform::String^ EventsURL {
+				Platform::String^ get() {
+					return this->_events_url;
+				}
+
+				void set(Platform::String^ val) {
+					this->_events_url = val;
+				}
+			}
+
+			property Platform::String^ ID {
+				Platform::String^ get() {
+					return this->_id;
+				}
+
+				void set(Platform::String^ val) {
+					this->_id = val;
+				}
+			}
+
+			property Platform::String^ OrganizationID {
+				Platform::String^ get() {
+					return this->_org_id;
+				}
+
+				void set(Platform::String^ val) {
+					this->_org_id = val;
+				}
+			}
+
+			property Platform::String^ Name {
+				Platform::String^ get() {
+					return this->_name;
+				}
+
+				void set(Platform::String^ val) {
+					this->_name = val;
+				}
+			}
+
+			property Platform::String^ QueriesURL {
+				Platform::String^ get() {
+					return this->_queries_url;
+				}
+
+				void set(Platform::String^ val) {
+					this->_queries_url = val;
+				}
+			}
+
+			property Platform::String^ PartnersURL {
+				Platform::String^ get() {
+					return this->_partners_url;
+				}
+
+				void set(Platform::String^ val) {
+					this->_partners_url = val;
+				}
+			}
+
+			property Platform::String^ URL {
+				Platform::String^ get() {
+					return this->_url;
+				}
+
+				void set(Platform::String^ val) {
+					this->_url = val;
+				}
+			}
+
+			property Platform::String^ MasterKey {
+				Platform::String^ get() {
+					return this->_master_key;
+				}
+
+				void set(Platform::String^ val) {
+					this->_master_key = val;
+				}
+			}
+
+			property Windows::UI::Xaml::Interop::IBindableObservableVector^ Events {
+				Windows::UI::Xaml::Interop::IBindableObservableVector^ get() {
+					return this->_events;
+				}
+			}
+		};
+
+	}
+
+	[Windows::UI::Xaml::Data::Bindable]
+	public ref class UBERSNIP_USER sealed {
+		Platform::String^ _Username;
+		Platform::String^ _FirstName;
+		Platform::String^ _LastName;
+		Platform::String^ _Country;
+		Platform::String^ _City;
+		Platform::String^ _Website;
+		Platform::String^ _Description;
+		Platform::String^ _TwitterHandle;
+		Platform::String^ _FacebookHandle;
+		Platform::String^ _YouTubeHandle;
+		Platform::String^ _SoundCloudHandle;
+		Windows::UI::Xaml::Media::ImageSource^ _Image;
+		Windows::UI::Xaml::Media::ImageSource^ _ImageCover;
+		event PropertyChangedEventHandler^ _PropertyChanged;
+
+		void OnPropertyChanged(Platform::String^ propertyName)
+		{
+			PropertyChangedEventArgs^ pcea = ref new  PropertyChangedEventArgs(propertyName);
+			_PropertyChanged(this, pcea);
 		}
 
+	public:
+		UBERSNIP_USER() {
+
+		}
+
+		property Platform::String^ Username {
+			Platform::String^ get() {
+				return this->_Username;
+			}
+
+			void set(Platform::String^ val) {
+				this->_Username = val;
+				this->OnPropertyChanged("Username");
+			}
+		}
+
+		property Platform::String^ FirstName {
+			Platform::String^ get() {
+				return this->_FirstName;
+			}
+
+			void set(Platform::String^ val) {
+				this->_FirstName = val;
+				this->OnPropertyChanged("FirstName");
+			}
+		}
+
+		property Platform::String^ LastName {
+			Platform::String^ get() {
+				return this->_LastName;
+			}
+
+			void set(Platform::String^ val) {
+				this->_LastName = val;
+				this->OnPropertyChanged("LastName");
+			}
+		}
+
+		property Platform::String^ Country {
+			Platform::String^ get() {
+				return this->_Country;
+			}
+
+			void set(Platform::String^ val) {
+				this->_Country = val;
+				this->OnPropertyChanged("Country");
+			}
+		}
+
+		property Platform::String^ City {
+			Platform::String^ get() {
+				return this->_City;
+			}
+
+			void set(Platform::String^ val) {
+				this->_City = val;
+				this->OnPropertyChanged("City");
+			}
+		}
+
+		property Platform::String^ Website {
+			Platform::String^ get() {
+				return this->_Website;
+			}
+
+			void set(Platform::String^ val) {
+				this->_Website = val;
+				this->OnPropertyChanged("Website");
+			}
+		}
+
+		property Platform::String^ Description {
+			Platform::String^ get() {
+				return this->_Description;
+			}
+
+			void set(Platform::String^ val) {
+				this->_Description = val;
+				this->OnPropertyChanged("Description");
+			}
+		}
+
+		property Platform::String^ Twitter {
+			Platform::String^ get() {
+				return this->_TwitterHandle;
+			}
+
+			void set(Platform::String^ val) {
+				this->_TwitterHandle = val;
+				this->OnPropertyChanged("Twitter");
+			}
+		}
+
+		property Platform::String^ Facebook {
+			Platform::String^ get() {
+				return this->_FacebookHandle;
+			}
+
+			void set(Platform::String^ val) {
+				this->_FacebookHandle = val;
+				this->OnPropertyChanged("Facebook");
+			}
+		}
+
+		property Platform::String^ YouTube {
+			Platform::String^ get() {
+				return this->_YouTubeHandle;
+			}
+
+			void set(Platform::String^ val) {
+				this->_YouTubeHandle = val;
+				this->OnPropertyChanged("YouTube");
+			}
+		}
+
+		property Platform::String^ SoundCloud {
+			Platform::String^ get() {
+				return this->_SoundCloudHandle;
+			}
+
+			void set(Platform::String^ val) {
+				this->_SoundCloudHandle = val;
+				this->OnPropertyChanged("SoundCloud");
+			}
+		}
+
+		//USER ACCOUNT AVATAR
+		property Windows::UI::Xaml::Media::ImageSource^ Image {
+			Windows::UI::Xaml::Media::ImageSource^ get() {
+				return this->_Image;
+			}
+		}
+
+		//USER ACCOUNT COVER IMAGE
+		property Windows::UI::Xaml::Media::ImageSource^ CoverImage {
+			Windows::UI::Xaml::Media::ImageSource^ get() {
+				return this->_ImageCover;
+			}
+		}
+
+		void SetImage(Platform::String^ path, Platform::String^ img)
+		{
+			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri("ms-appx://UXBlumIO/Assets/" + path);
+			if (img == "Image") {
+				this->_Image = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+			}
+			else {
+				this->_ImageCover = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+			}
+			this->OnPropertyChanged("Image");
+		}
+
+		void SetImageURI(Platform::String^ path, Platform::String^ img)
+		{
+			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri(path);
+			if (img == "Image") {
+				this->_Image = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+			}
+			else {
+				this->_ImageCover = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+			}
+			this->OnPropertyChanged("Image");
+		}
 	};
-	}
 
 	[Windows::UI::Xaml::Data::Bindable]
 	public ref class UBERSNIP_ACCOUNT sealed {
@@ -905,18 +1340,30 @@ namespace UXBlumIO
 
 		Platform::Object^ accMGR;
 
-		void SetImage(Platform::String^ path, Windows::UI::Xaml::Media::ImageSource^ img)
+		void SetImage(Platform::String^ path, Platform::String^ img)
 		{
 			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri("ms-appx://UXBlumIO/Assets/" + path);
-			img = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
-			OnPropertyChanged("Image");
+			if (img == "Image") {
+				this->_Image = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+				OnPropertyChanged("Image");
+			}
+			else {
+				this->_ImageCover = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+				OnPropertyChanged("ImageCover");
+			}
 		}
 
-		void SetImageURI(Platform::String^ path, Windows::UI::Xaml::Media::ImageSource^ img)
+		void SetImageURI(Platform::String^ path, Platform::String^ img)
 		{
 			Windows::Foundation::Uri^ uri = ref new Windows::Foundation::Uri(path);
-			img = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
-			OnPropertyChanged("Image");
+			if (img == "Image") {
+				this->_Image = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+				OnPropertyChanged("Image");
+			}
+			else {
+				this->_ImageCover = ref new Windows::UI::Xaml::Media::Imaging::BitmapImage(uri);
+				OnPropertyChanged("ImageCover");
+			}
 		}
 
 		event PropertyChangedEventHandler^ _PropertyChanged;
@@ -969,8 +1416,8 @@ namespace UXBlumIO
 
 				this->_Token = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(ubs_data, "token")->valuestring);
 				//this->_UID = STRING_UTILS::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "uid")->valuestring);
-				this->SetImageURI("https://ubersnip.com//thumb.php?src=" + UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "image")->valuestring) + "&t=m&w=112&h=112", this->_Image);
-				this->SetImageURI("https://ubersnip.com//thumb.php?src=" + UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "cover")->valuestring) + "&t=m&w=112&h=112", this->_ImageCover);
+				this->SetImageURI("https://ubersnip.com//thumb.php?src=" + UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "image")->valuestring) + "&t=m&w=112&h=112", "Image");
+				this->SetImageURI("https://ubersnip.com//thumb.php?src=" + UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "cover")->valuestring) + "&t=m&w=112&h=112", "CoverImage");
 				this->_UID = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "idu")->valuestring);
 				Platform::String^ bio = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(ubs_data, "user"), "bio")->valuestring);
 
@@ -1114,9 +1561,6 @@ namespace UXBlumIO
 	};
 
 
-
-
-
 	[Windows::UI::Xaml::Data::Bindable]
 	public ref class UBERSNIP_LIKE sealed {
 	private:
@@ -1212,6 +1656,7 @@ namespace UXBlumIO
 			}
 		}
 	};
+
 
 
 	[Windows::UI::Xaml::Data::Bindable]
@@ -1688,6 +2133,50 @@ namespace UXBlumIO
 					return myacc;
 				}
 
+				static UBERSNIP_USER^ getUserData(Platform::String^ username_or_id, Platform::String^ method) {
+					UberSnip::UBERSNIP_CLIENT* UberSnipAPI = new UberSnip::UBERSNIP_CLIENT();
+
+					UberSnipAPI->Http->RequestURL = "http://api.ubersnip.com/users.php";
+					if (method == "username") {
+						UberSnipAPI->Http->addParam("username", username_or_id);
+					}
+					else if (method == "UID") {
+						UberSnipAPI->Http->addParam("UID", username_or_id);
+					}
+					else {
+						UberSnipAPI->Http->addParam("UID", username_or_id);
+					}
+
+					UberSnipAPI->Http->request();
+
+					int err = UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).find("__api_err");
+
+					if (err < 0) {
+						if (UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).length() < 3) {
+							return nullptr;
+						}
+					}
+
+
+					cJSON* user_data = cJSON_Parse(UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).c_str());
+					UBERSNIP_USER^ user = ref new UBERSNIP_USER();
+					user->City = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "city")->valuestring);
+					user->Country = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "country")->valuestring);
+					user->Description = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "description")->valuestring);
+					user->Facebook = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "facebook")->valuestring);
+					user->FirstName = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "first_name")->valuestring);
+					user->LastName = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "last_name")->valuestring);
+					user->SoundCloud = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "soundcloud")->valuestring);
+					user->Twitter = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "twitter")->valuestring);
+					user->Username = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "username")->valuestring);
+					user->Website = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "website")->valuestring);
+					user->YouTube = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "youtube")->valuestring);
+					user->SetImageURI("https://ubersnip.com//thumb.php?src=" + UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "image")->valuestring) + "&t=a&w=112&h=112", "Image");
+					user->SetImageURI("https://ubersnip.com//thumb.php?src=" + UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(user_data, "cover")->valuestring) + "&t=c&w=1100&h=200", "CoverImage");
+
+					return user;
+				}
+
 				Accounts() {
 
 				}
@@ -1696,13 +2185,23 @@ namespace UXBlumIO
 			public ref class KeenIO sealed {
 			public:
 				static void SendData(Platform::String^ proj_id, Platform::String^ collection, Platform::String^ event_name, Platform::String^ event_property) {
-					KeenIO_API::KEENIO_CLIENT * UberSnipAPI = new KeenIO_API::KEENIO_CLIENT();
+					KeenIOAPI::KEENIO_CLIENT * UberSnipAPI = new KeenIOAPI::KEENIO_CLIENT();
 
 					UberSnipAPI->Http->RequestURL = "https://api.keen.io/3.0/projects/" + proj_id + "/events/" + collection;
 					UberSnipAPI->Http->addParam("api_key", App::KeenIOMasterKey);
 
 					UberSnipAPI->Http->addDataParam("data", event_name, event_property);
 					UberSnipAPI->Http->request();
+
+				}
+
+				static Platform::String^ ReceiveData(Platform::String^ url) {
+					KeenIOAPI::KEENIO_CLIENT * UberSnipAPI = new KeenIOAPI::KEENIO_CLIENT();
+
+					UberSnipAPI->Http->RequestURL = url;
+					UberSnipAPI->Http->request();
+
+					return UberSnipAPI->Client->BodyResponse;
 
 				}
 			};

@@ -26,6 +26,12 @@ MainPage::MainPage()
 {
 
 	InitializeComponent();
+
+
+	this->keen_project->ID = "";
+	this->keen_project->MasterKey = "";
+	this->keen_project->LoadProject();
+
 	GENERIC_ITEM^ item = ref new GENERIC_ITEM();
 	item->Title = "All";
 	this->Categories->Append(item);
@@ -46,6 +52,8 @@ void MainPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs^
 	}
 	else {
 		string dataParam[2] = { "app_event", ".LAUNCH" };
+		
+		//this->keen_project->SentEvent("SOCIAL.APP", "app_event", ".LAUNCH");
 		UberSnip::HELPER::KeenIO::SendData(App::KeenIOProjectID, "SOCIAL.APP", "app_event", ".LAUNCH");
 	}
 		
