@@ -1,6 +1,6 @@
 ##Documentation : Checkout the [wiki](https://github.com/UberSnip/SocialMusicApp/wiki)
 
-![XBlumIO Theme](https://github.com/UberSnip/SocialMusicApp/blob/UXBlumIO/UXBlumIO/screen_shots/ss_main.gif?raw=true)
+![XBlumIO Theme](https://raw.githubusercontent.com/UberSnip/SocialMusicApp/UXBlumIO/UXBlumIO/screen_shots/ss-01.gif)
 
 
 #### Current Feature List
