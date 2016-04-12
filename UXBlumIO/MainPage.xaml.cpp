@@ -28,15 +28,68 @@ MainPage::MainPage()
 	InitializeComponent();
 
 
-	this->keen_project->ID = "";
-	this->keen_project->MasterKey = "";
+	this->keen_project->ID = App::KeenIOProjectID;
+	this->keen_project->MasterKey = App::KeenIOMasterKey;
 	this->keen_project->LoadProject();
 
 	GENERIC_ITEM^ item = ref new GENERIC_ITEM();
 	item->Title = "All";
 	this->Categories->Append(item);
 
+	this->loadInitialCategories();
+
 }
+void UXBlumIO::MainPage::ic_menu_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
+{
+
+}
+void UXBlumIO::MainPage::ic_menu_add_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
+{
+	this->contentFrame->Navigate(LoginPage::typeid, this);
+}
+void UXBlumIO::MainPage::HamburgerButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+	if (this->splitView1->IsPaneOpen == true) {
+		//this->splitView1->OpenPaneLength = 50;
+		this->hamburgerPanelColorClose->Begin();
+		this->splitView1->IsPaneOpen = false;
+	}
+	else {
+		//this->splitView1->OpenPaneLength = 150;
+		this->hamburgerPanelColor->Begin();
+		this->splitView1->IsPaneOpen = true;
+	}
+
+	//this->splitView1->IsPaneOpen = !this->splitView1->IsPaneOpen;
+}
+void UXBlumIO::MainPage::toggleButton_Toggled(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+
+	//IF SHOWING ALL TRACKS
+	if (this->toggleButton->IsOn == true) {
+
+		// LOAD PUBLIC STREAM
+		this->loadTracks();
+	}
+	else {
+
+		//IF LOGGED IN
+		if (this->AccountManager->ActiveAccount != nullptr) {
+
+			//LOAD TRACKS FAVORITED BY USER
+			this->loadUserFavTracks(this->AccountManager->ActiveAccount->UID);
+		}
+		else {
+
+			//GO TO LOGIN PAGE
+			this->contentFrame->Navigate(LoginPage::typeid, this);
+		}
+	}
+}
+void UXBlumIO::MainPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+}
+
 void MainPage::restoreTracks() {
 	this->contentFrame->Navigate(MyFavoritesStream::typeid, this);
 }
@@ -53,32 +106,11 @@ void MainPage::OnNavigatedTo(Windows::UI::Xaml::Navigation::NavigationEventArgs^
 	else {
 		string dataParam[2] = { "app_event", ".LAUNCH" };
 		
-		//this->keen_project->SentEvent("SOCIAL.APP", "app_event", ".LAUNCH");
+		//this->keen_project->SendEvent("SOCIAL.APP", "app_event", ".LAUNCH");
 		UberSnip::HELPER::KeenIO::SendData(App::KeenIOProjectID, "SOCIAL.APP", "app_event", ".LAUNCH");
 	}
 		
 	this->restoreTracks();
-}
-void UXBlumIO::MainPage::ic_menu_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
-{
-
-}
-void UXBlumIO::MainPage::ic_menu_add_PointerReleased(Platform::Object^ sender, Windows::UI::Xaml::Input::PointerRoutedEventArgs^ e)
-{
-	this->contentFrame->Navigate(LoginPage::typeid, this);
-}
-void UXBlumIO::MainPage::HamburgerButton_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-{
-	if (this->splitView1->IsPaneOpen == true) {
-		//this->splitView1->OpenPaneLength = 50;
-		this->splitView1->IsPaneOpen = false;
-	}
-	else {
-		//this->splitView1->OpenPaneLength = 150;
-		this->splitView1->IsPaneOpen = true;
-	}
-
-	//this->splitView1->IsPaneOpen = !this->splitView1->IsPaneOpen;
 }
 void MainPage::loadTracks() {
 	UberSnip::UBERSNIP_CLIENT* UberSnipAPI = new UberSnip::UBERSNIP_CLIENT();
@@ -259,30 +291,115 @@ void MainPage::loadMyTracks() {
 		this->tracks->Append(ubersnipTrack);
 	}
 }
-void UXBlumIO::MainPage::toggleButton_Toggled(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
-{
 
-	//IF SHOWING ALL TRACKS
-	if (this->toggleButton->IsOn == true) {
+void MainPage::loadInitialCategories(void) {
 
-		// LOAD PUBLIC STREAM
-		this->loadTracks();
+
+	//UBERSNIP API 0.4
+	UberSnip::UBERSNIP_CLIENT* UberSnipAPI = new UberSnip::UBERSNIP_CLIENT();
+
+	UberSnipAPI->Http->RequestURL = "http://api.ubersnip.com/categories.php";
+	UberSnipAPI->Http->request();
+
+
+	cJSON* cats = cJSON_Parse(_string(UberSnipAPI->Client->BodyResponse));
+	cats = cats->child;
+	int *cat_count = new int(cJSON_GetArraySize(cats));
+
+	this->Categories->Clear();
+
+	GENERIC_ITEM^ all_item = ref new GENERIC_ITEM();
+	all_item->Title = "All";
+
+	this->Categories->Append(all_item);
+	for (int i = 0; i < *cat_count; i++) {
+		cJSON* cat = new cJSON();
+		cat = cJSON_GetArrayItem(cats, i);
+
+		string *track_title = new string(cJSON_GetObjectItem(cat, "name")->valuestring);
+
+
+		GENERIC_ITEM^ ubersnipCategory = ref new GENERIC_ITEM();
+		ubersnipCategory->Title = _String(*track_title);
+
+		this->Categories->Append(ubersnipCategory);
 	}
-	else {
 
-		//IF LOGGED IN
-		if (this->AccountManager->ActiveAccount != nullptr) {
-
-			//LOAD TRACKS FAVORITED BY USER
-			this->loadUserFavTracks(this->AccountManager->ActiveAccount->UID);
-		}
-		else {
-
-			//GO TO LOGIN PAGE
-			this->contentFrame->Navigate(LoginPage::typeid, this);
-		}
-	}
 }
-void UXBlumIO::MainPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+
+
+void UXBlumIO::MainPage::splitView1_PaneClosing(Windows::UI::Xaml::Controls::SplitView^ sender, Windows::UI::Xaml::Controls::SplitViewPaneClosingEventArgs^ args)
 {
+	this->hamburgerPanelColorClose->Begin();
+}
+
+
+void UXBlumIO::MainPage::GridView_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e)
+{
+	GENERIC_ITEM^ im = dynamic_cast<GENERIC_ITEM^>(dynamic_cast<GridView^>(sender)->SelectedItem);
+	Platform::String^ genre = im->Title;
+
+	UberSnip::UBERSNIP_CLIENT* UberSnipAPI = new UberSnip::UBERSNIP_CLIENT();
+
+	UberSnipAPI->Http->RequestURL = "http://api.ubersnip.com/tracks.php";
+	UberSnipAPI->Http->addParam("genre", genre);
+	UberSnipAPI->Http->request();
+
+	int err = UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).find("__api_err");
+
+	if (err < 0) {
+		if (UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).length() < 3) {
+			return;
+		}
+	}
+
+
+
+	cJSON* tracks = cJSON_Parse(UberSnip::UTILS::STRING::StringToAscIIChars(UberSnipAPI->Client->BodyResponse).c_str());
+	tracks = cJSON_GetObjectItem(tracks, "tracks");
+	int *track_count = new int(cJSON_GetArraySize(tracks));
+	this->tracks->Clear();
+
+
+	UBERSNIP_TRACK^ ubersnipTrack[1000];
+	cJSON* curr_track = tracks->child;
+	for (int i = 0; i < *track_count; i++) {
+		ubersnipTrack[i] = ref new UBERSNIP_TRACK();
+
+		//GO TO NEXT JSON TRACK OBJECT
+		//for (int m = 0; m < i; m++) {
+		//}
+
+		if (curr_track == nullptr) {
+			break;
+		}
+		//GET THE ID OF TRACK
+		ubersnipTrack[i]->ID = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "ID")->valuestring);
+
+		//GET TRACK TITLE
+		ubersnipTrack[i]->Title = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "title")->valuestring);
+
+		//GET TRACK COVER IMAGE
+		Platform::String^ track_cover = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "art")->valuestring);
+
+		//GET TRACK ARTIST/OWNER USERNAME
+		ubersnipTrack[i]->Artist = UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(cJSON_GetObjectItem(curr_track, "user"), "username")->valuestring);
+
+		//GET TRACK FILENAME
+		ubersnipTrack[i]->FileName = "https://ubersnip.com/uploads/tracks/" + UberSnip::UTILS::STRING::StringFromAscIIChars(cJSON_GetObjectItem(curr_track, "name")->valuestring);
+
+
+		//SETS THE IMAGE URL OF TRACK COVER
+		ubersnipTrack[i]->SetImageURI("https://ubersnip.com//thumb.php?src=" + track_cover + "&t=m&w=112&h=112");
+
+		//ADD TO TRACK LIST
+		this->tracks->Append(ubersnipTrack[i]);
+
+		curr_track = curr_track->next;
+	}
+
+	if (this->contentFrame != nullptr)
+		this->contentFrame->Navigate(MyFavoritesStream::typeid, this);
+
+	UberSnip::HELPER::KeenIO::SendData(App::KeenIOProjectID, "SOCIAL.APP", "category_view", genre);
 }

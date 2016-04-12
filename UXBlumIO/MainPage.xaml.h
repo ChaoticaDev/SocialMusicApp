@@ -99,9 +99,12 @@ namespace UXBlumIO
 		void loadTracks();
 		void toggleButton_Toggled(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void loadUserTracks(Platform::String^ user_id);
+		void loadInitialCategories(void);
 		void loadMyTracks();
 		void restoreTracks();
 		void loadUserFavTracks(Platform::String^ user_id);
 		void Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+		void splitView1_PaneClosing(Windows::UI::Xaml::Controls::SplitView^ sender, Windows::UI::Xaml::Controls::SplitViewPaneClosingEventArgs^ args);
+		void GridView_SelectionChanged(Platform::Object^ sender, Windows::UI::Xaml::Controls::SelectionChangedEventArgs^ e);
 	};
 }

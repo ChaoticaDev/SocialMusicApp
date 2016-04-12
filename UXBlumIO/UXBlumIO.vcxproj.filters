@@ -30,6 +30,7 @@
     <ClCompile Include="UBS_SDK.h" />
     <ClCompile Include="external\JSON\cJSON.cpp" />
     <ClCompile Include="TrackDisplayPage.xaml.cpp" />
+    <ClCompile Include="UserProfilePage.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -43,6 +44,7 @@
     <ClInclude Include="external\JSON\cJSON.h" />
     <ClInclude Include="TrackDisplayPage.xaml.h" />
     <ClInclude Include="external\KEENIOSDK_CLIENT.h" />
+    <ClInclude Include="UserProfilePage.xaml.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png">
@@ -130,6 +132,24 @@
       <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\icons\ic_heart_red.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ion_play_black.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ion_pause_black.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\lsf_category.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\lsf_category_white.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\fa_microphone_white.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\icons\ic_target_white.png">
       <Filter>Assets</Filter>
     </Image>
   </ItemGroup>

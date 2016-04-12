@@ -6,13 +6,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" Loaded="Page_Loaded">
+    
 
-    <RelativePanel>
+    <RelativePanel Background="White">
         <MediaElement x:Name="mediaElement" />
+        <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"  RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Padding="50,0,0,0">
+            <HyperlinkButton RelativePanel.RightOf="now_playing_text" RelativePanel.AlignVerticalCenterWith="now_playing_text" Margin="5,0,0,0" Content="Skip" FontSize="10" Padding="3,2,3,4" />
+            <Image Name="play_pause_button" Source="Assets/icons/ion_play_black.png" RelativePanel.AlignBottomWith="toggleButton" Margin="5,5,0,5" />
+            <ToggleSwitch x:Name="toggleButton" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" OffContent="My Favorites" OnContent="All Streams" Margin="0" IsOn="True" Toggled="toggleButton_Toggled" RelativePanel.AlignRightWithPanel="True"  />
+            <TextBlock Name="now_playing_text" Text="Select a track" RelativePanel.RightOf="play_pause_button" RelativePanel.AlignVerticalCenterWith="play_pause_button" Margin="5,0,0,0" FontSize="11" FontFamily="Sylfaen"/>
+            <HyperlinkButton Visibility="Collapsed" Name="acc_link" Content="Select a track" RelativePanel.AlignVerticalCenterWith="ic_menu_add" Margin="5,5,0,0" FontSize="11" FontFamily="Sylfaen" RelativePanel.LeftOf="ic_menu_add" Padding="0,6,5,6"/>
+            <Image Visibility="Collapsed" x:Name="ic_menu_add" Source="Assets/ic_add.png" Width="15" Height="15" Margin="0,5,5,0" RelativePanel.LeftOf="toggleButton" PointerReleased="ic_menu_add_PointerReleased" RelativePanel.AlignVerticalCenterWith="toggleButton" />
+            <Frame x:Name="contentFrame" RelativePanel.Below="toggleButton" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="5,5,-5,0" />
+
+            <ComboBox Visibility="Collapsed" ItemsSource="{Binding Categories}" x:Name="menu_create_tb" Height="25" RelativePanel.AlignTopWith="" RelativePanel.LeftOf="acc_link" RelativePanel.AlignVerticalCenterWith="acc_link" Margin="0,0,20,0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="local:GENERIC_ITEM">
+                        <TextBlock Text="hi" Foreground="Black" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </RelativePanel>
+        <!--
         <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RelativePanel.AlignLeftWithPanel="True" Margin="50,0,0,0"  RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True">
             <RelativePanel x:Name="nav_panel" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignTopWithPanel="True" Height="40">
                 <Image x:Name="ic_menu" Source="Assets/ic_menu.png" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" Width="15" Height="15" Margin="10,0,0,0" PointerReleased="ic_menu_PointerReleased" Visibility="Collapsed" />
-                <Image x:Name="ic_menu_add" Source="Assets/ic_add.png" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Width="15" Height="15" Margin="0,0,10,0" RelativePanel.LeftOf="" PointerReleased="ic_menu_add_PointerReleased" RelativePanel.AlignRightWithPanel="True" />
 
                 <TextBlock x:Name="menu_CurrentPage" Text="Featured Streams" RelativePanel.RightOf="ic_menu" RelativePanel.AlignVerticalCenterWith="ic_menu" Margin="15,0,0,0" FontFamily="Sitka Subheading" Foreground="#FF040036" Padding="0,5,0,0" FontSize="12" />
                 <Border RelativePanel.LeftOf="ic_menu_add" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Width="1" Background="#FFEAEAEA" Margin="0,0,30,0" />
@@ -25,13 +43,6 @@
                     </Border.Background>
                 </Border>
             </RelativePanel>
-            <ComboBox ItemsSource="{Binding Categories}" x:Name="menu_create_tb" RelativePanel.AlignRightWithPanel="True" Height="25" RelativePanel.RightOf="toggleButton" RelativePanel.AlignTopWith="" RelativePanel.AlignBottomWith="toggleButton">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="local:GENERIC_ITEM">
-                        <TextBlock Text="hi" Foreground="Black" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
             <ToggleSwitch x:Name="toggleButton" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="109" RelativePanel.Below="nav_panel" OffContent="My Favorites" OnContent="All Streams" Margin="10,0,0,0" IsOn="True" Toggled="toggleButton_Toggled" />
             <Frame x:Name="contentFrame" RelativePanel.Below="toggleButton" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" Margin="0,5,0,0" />
             <RelativePanel RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Height="25" Background="#CC040036">
@@ -47,27 +58,65 @@
 
         <RelativePanel x:Name="hamburger" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True" Background="White">
         </RelativePanel>
+        -->
 
-        <SplitView x:Name="splitView1" DisplayMode="CompactOverlay" CompactPaneLength="50" OpenPaneLength="150" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" BorderBrush="#FF2C2C2C" BorderThickness="0,0,1,0">
+        <SplitView ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollMode="Enabled" ScrollViewer.IsDeferredScrollingEnabled="True" x:Name="splitView1" DisplayMode="CompactOverlay" CompactPaneLength="50" OpenPaneLength="150" RelativePanel.AlignTopWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignLeftWithPanel="True" BorderBrush="#FF2C2C2C" BorderThickness="0,0,1,0" PaneClosing="splitView1_PaneClosing">
+            
             <SplitView.Pane>
-                <StackPanel Background="White">
+                <StackPanel Name="hamPanel" Background="#FF912CEE">
+                    <StackPanel.Resources>
+                        <Storyboard x:Name="hamburgerPanelColorClose">
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="hamPanel" Storyboard.TargetProperty="(StackPanel.Background).(SolidColorBrush.Color)">
+                                <EasingColorKeyFrame KeyTime="0:0:0" Value="#FF222222">
+                                    <EasingColorKeyFrame.EasingFunction>
+                                        <QuinticEase EasingMode="EaseIn"/>
+                                    </EasingColorKeyFrame.EasingFunction>
+                                </EasingColorKeyFrame>
+                                <LinearColorKeyFrame KeyTime="0:0:0.2" Value="#FF912CEE" />
+                            </ColorAnimationUsingKeyFrames>
+                        </Storyboard>
+                        <Storyboard x:Name="hamburgerPanelColor">
+                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="hamPanel" Storyboard.TargetProperty="(StackPanel.Background).(SolidColorBrush.Color)">
+                                <EasingColorKeyFrame KeyTime="0:0:0" Value="#FF912CEE">
+                                    <EasingColorKeyFrame.EasingFunction>
+                                        <QuinticEase EasingMode="EaseIn"/>
+                                    </EasingColorKeyFrame.EasingFunction>
+                                </EasingColorKeyFrame>
+                                <LinearColorKeyFrame KeyTime="0:0:0.2" Value="#FF222222" />
+                            </ColorAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </StackPanel.Resources>
                     <Button x:Name="HamburgerButton" FontFamily="Segoe MDL2 Assets" Content="&#xE700;"
                     Width="50" Height="50" Background="Transparent" Click="HamburgerButton_Click"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="MenuButton1" FontFamily="Segoe MDL2 Assets" Content="&#xE825;"
-                    Width="50" Height="50" Background="Transparent"/>
-                        <TextBlock Text="Button 1" FontSize="18" VerticalAlignment="Center" />
+                    <StackPanel Orientation="Horizontal" Padding="5">
+                        <Image x:Name="MenuButton1" Width="20" Height="20" Source="Assets/icons/lsf_category_white.png" Margin="10,0,0,0" />
+                        <TextBlock Text="Categories" FontSize="18" VerticalAlignment="Center" Margin="15,0,0,0" Foreground="White" />
+                        
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="MenuButton2" FontFamily="Segoe MDL2 Assets" Content="&#xE10F;"
-                        Width="50" Height="50" Background="Transparent"/>
-                        <TextBlock Text="Button 2" FontSize="18" VerticalAlignment="Center" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="MenuButton3" FontFamily="Segoe MDL2 Assets" Content="&#xE1D6;"
-                        Width="50" Height="50" Background="Transparent"/>
-                        <TextBlock Text="Button 3" FontSize="18" VerticalAlignment="Center" />
-                    </StackPanel>
+                    <GridView SelectionChanged="GridView_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollMode="Enabled" ScrollViewer.IsDeferredScrollingEnabled="True" ItemsSource="{x:Bind Categories}" MaxHeight="350">
+                        <GridView.ItemContainerStyle>
+                            <Style TargetType="GridViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </GridView.ItemContainerStyle>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+
+                        <GridView.ItemTemplate>
+                            <DataTemplate x:DataType="local:GENERIC_ITEM">
+                                <RelativePanel Width="150">
+                                    <StackPanel Orientation="Horizontal" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignTopWithPanel="True">
+                                        <Image x:Name="MenuButton2" Width="10" Height="10" Source="Assets/icons/ic_target_white.png" Margin="20,1,0,0" HorizontalAlignment="Left" RelativePanel.AlignLeftWithPanel="True" />
+                                        <TextBlock Text="{x:Bind Title}" FontSize="12" VerticalAlignment="Center" Margin="25,0,0,0" Foreground="White" />
+                                    </StackPanel>
+                                </RelativePanel>
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+
+                    </GridView>
                 </StackPanel>
             </SplitView.Pane>
 

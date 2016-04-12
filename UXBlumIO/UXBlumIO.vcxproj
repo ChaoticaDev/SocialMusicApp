@@ -215,6 +215,7 @@
     <Image Include="Assets\43.jpg" />
     <Image Include="Assets\abstractguy.jpg" />
     <Image Include="Assets\aguilera.jpg" />
+    <Image Include="Assets\icons\fa_microphone_white.png" />
     <Image Include="Assets\icons\ic_fastforward.png" />
     <Image Include="Assets\icons\ic_heart_red.png" />
     <Image Include="Assets\icons\ic_left_black.png" />
@@ -225,7 +226,12 @@
     <Image Include="Assets\icons\ic_right_black.png" />
     <Image Include="Assets\icons\ic_skipbackward.png" />
     <Image Include="Assets\icons\ic_skipforward.png" />
+    <Image Include="Assets\icons\ic_target_white.png" />
     <Image Include="Assets\icons\ic_user_add.png" />
+    <Image Include="Assets\icons\ion_pause_black.png" />
+    <Image Include="Assets\icons\ion_play_black.png" />
+    <Image Include="Assets\icons\lsf_category.png" />
+    <Image Include="Assets\icons\lsf_category_white.png" />
     <Image Include="Assets\ic_add.png" />
     <Image Include="Assets\icons\ic_heart.png" />
     <Image Include="Assets\icons\ic_heartbeat.png" />

@@ -876,6 +876,43 @@ namespace UXBlumIO
 
 	};
 
+		class KEENIO_CLIENT {
+
+		public:
+			HTTP^ Http = ref new HTTP();
+			CLIENT^ Client = ref new CLIENT();
+
+
+
+			KEENIO_CLIENT() {
+				this->Client->http = ref new HTTP();
+				dynamic_cast<HTTP^>(this->Client->http)->SDKClient = this->Client;
+				this->Http = dynamic_cast<HTTP^>(this->Client->http);
+			}
+
+		};
+
+		public ref class KEENIO_AUTH sealed {
+			Platform::String^ _master_key;
+			Platform::String^ _write_key;
+			Platform::String^ _read_key;
+		public:
+			KEENIO_AUTH() {
+
+			}
+
+
+			property Platform::String^ MasterKey {
+				Platform::String^ get() {
+					return this->_master_key;
+				}
+
+				void set(Platform::String^ val) {
+					this->_master_key = val;
+				}
+			}
+		};
+
 		public ref class KEENIO_GENERIC_PROPERTY sealed{
 			Platform::String^ _property;
 			Platform::String^ _value;
@@ -909,23 +946,58 @@ namespace UXBlumIO
 			Platform::String^ _name;
 			Windows::UI::Xaml::Interop::IBindableObservableVector^ _properties = ref new Platform::Collections::Vector<KEENIO_GENERIC_PROPERTY^>();
 			Platform::String^ _url;
+			Platform::String^ _proj_id;
 
-			cJSON* toJSON() {
-				cJSON* root;
+			
+			KEENIO_AUTH^ auth = ref new KEENIO_AUTH();
 
-				Platform::String^ _json_body = "\"properties\":{";
-
-				for (size_t i = 0; i < this->_properties->Size; i++) {
-					KEENIO_GENERIC_PROPERTY^ prop = dynamic_cast<KEENIO_GENERIC_PROPERTY^>(this->_properties->GetAt(i));
-					_json_body += i == 0 ? "\"" + prop->PropertyName + "\":\"" + prop->PropertyValue + "\"" : ", \"" + prop->PropertyName + "\":\"" + prop->PropertyValue + "\"";
-				}
-
-				_json_body += "}";
-
-				return root;
-			}
+			bool verified = false;
+			bool error = false;
 		public:
 			KEENIO_EVENT() {
+
+			}
+
+			void LoadProperties() {
+				KEENIO_CLIENT * UberSnipAPI = new KEENIO_CLIENT();
+
+				UberSnipAPI->Http->RequestURL = "https://api.keen.io/3.0/projects/" + _proj_id  + "/events/" + this->_name;
+				UberSnipAPI->Http->addParam("api_key", this->auth->MasterKey);
+
+				UberSnipAPI->Http->request();
+
+				cJSON* response = cJSON_Parse(_StringToAscIIChars(UberSnipAPI->Client->BodyResponse));
+
+				cJSON* arr_events;
+
+				try {
+					arr_events = cJSON_GetObjectItem(response, "properties");
+				}
+				catch (std::exception_ptr e) {
+					this->verified = false;
+					this->error = true;
+					return;
+				}
+
+				for (cJSON* c_event = arr_events->child; c_event != nullptr; c_event = c_event->next) {
+					KEENIO_GENERIC_PROPERTY^ k_prop = ref new KEENIO_GENERIC_PROPERTY();
+					k_prop->PropertyName = _String(c_event->valuestring);
+					k_prop->PropertyValue = _String(c_event->string);
+					this->_properties->Append(k_prop);
+				}
+
+				this->verified = true;
+				this->error = false;
+			}
+
+			property KEENIO_AUTH^ Auth {
+				KEENIO_AUTH^ get() {
+					return this->auth;
+				}
+
+				void set(KEENIO_AUTH^ val) {
+					this->auth = val;
+				}
 			}
 
 			property Platform::String^ Name {
@@ -935,6 +1007,16 @@ namespace UXBlumIO
 
 				void set(Platform::String^ val) {
 					this->_name = val;
+				}
+			}
+
+			property Platform::String^ ProjectID {
+				Platform::String^ get() {
+					return this->_proj_id;
+				}
+
+				void set(Platform::String^ val) {
+					this->_proj_id = val;
 				}
 			}
 
@@ -954,22 +1036,6 @@ namespace UXBlumIO
 				}
 			}
 		};
-		
-		class KEENIO_CLIENT {
-
-		public:
-			HTTP^ Http = ref new HTTP();
-			CLIENT^ Client = ref new CLIENT();
-
-
-
-			KEENIO_CLIENT() {
-				this->Client->http = ref new HTTP();
-				dynamic_cast<HTTP^>(this->Client->http)->SDKClient = this->Client;
-				this->Http = dynamic_cast<HTTP^>(this->Client->http);
-			}
-
-		};
 
 		public ref class KEENIO_PROJECT sealed{
 			Platform::String^ _events_url;
@@ -981,9 +1047,7 @@ namespace UXBlumIO
 			Platform::String^ _partners_url;
 			Platform::String^ _url;
 
-			Platform::String^ _master_key;
-			Platform::String^ _write_key;
-			Platform::String^ _read_key;
+			KEENIO_AUTH^ auth = ref new KEENIO_AUTH();
 
 			bool verified = false;
 			bool error = false;
@@ -1019,6 +1083,9 @@ namespace UXBlumIO
 					KEENIO_EVENT^ k_event = ref new KEENIO_EVENT();
 					k_event->Name = _String(cJSON_GetObjectItem(c_event, "name")->valuestring);
 					k_event->URL = _String(cJSON_GetObjectItem(c_event, "url")->valuestring);
+					k_event->Auth = this->auth;
+					k_event->ProjectID = this->_id;
+					k_event->LoadProperties();
 					this->_events->Append(k_event);
 				}
 
@@ -1032,7 +1099,7 @@ namespace UXBlumIO
 				this->error = false;
 			}
 
-			void SentEvent(Platform::String^ collection, Platform::String^ event_name, Platform::String^ event_property) {
+			void SendEvent(Platform::String^ collection, Platform::String^ event_name, Platform::String^ event_property) {
 
 				if (!this->verified) {return;}
 
@@ -1117,11 +1184,11 @@ namespace UXBlumIO
 
 			property Platform::String^ MasterKey {
 				Platform::String^ get() {
-					return this->_master_key;
+					return this->auth->MasterKey;
 				}
 
 				void set(Platform::String^ val) {
-					this->_master_key = val;
+					this->auth->MasterKey = val;
 				}
 			}
 
