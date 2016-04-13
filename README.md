@@ -29,7 +29,7 @@ What's available now?
 
 This project is in-the-works, but development is very active -- usually weekly builds with several new features or fixes; and many times, every other day.
 
-#### KeenIO Analytics
+#### KeenIO Analytics [View SDK](https://github.com/UberSnip/keenio-cpp-sdk/)
 
 Without analytics, growth is difficult ! We've implemented the KeenIO community SDK to handle analytics. Send events with two lines of code! 
 	
