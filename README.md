@@ -5,6 +5,7 @@
 This software is especially developed for Indie Record Labels looking to sell their artists' music without third-party reliance (other than payment services).
 
 Advantages of using UberSnip SMA (including but not limited to):
+
 	• Record label and musicians keep 100% of royalties. More income for you!
 	• Indie-Music friendly -- Geared to indie artist community.
 	• Social Networking platform -- Keep listeners engaged.
