@@ -1,5 +1,9 @@
 ##Documentation : Checkout the [wiki](https://github.com/UberSnip/SocialMusicApp/wiki)
 
+[Like us on Facebook](https://www.facebook.com/UberSnipDev)
+
+[Follow us on Twitter](https://twitter.com/UberSnipDev)
+
 ![XBlumIO Theme](https://raw.githubusercontent.com/UberSnip/SocialMusicApp/UXBlumIO/UXBlumIO/screen_shots/ss-01.gif)
 
 This software is especially developed for Indie Record Labels looking to sell their artists' music without third-party reliance (other than payment services).
