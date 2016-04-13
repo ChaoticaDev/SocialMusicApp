@@ -1079,6 +1079,11 @@ namespace UXBlumIO
 					return;
 				}
 
+				if(arr_events == nullptr) {
+					this->verified = false;
+					this->error = true;
+					return;
+				}
 				for (cJSON* c_event = arr_events->child; c_event != nullptr; c_event = c_event->next) {
 					KEENIO_EVENT^ k_event = ref new KEENIO_EVENT();
 					k_event->Name = _String(cJSON_GetObjectItem(c_event, "name")->valuestring);
