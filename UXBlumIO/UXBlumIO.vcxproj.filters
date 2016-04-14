@@ -31,6 +31,7 @@
     <ClCompile Include="external\JSON\cJSON.cpp" />
     <ClCompile Include="TrackDisplayPage.xaml.cpp" />
     <ClCompile Include="UserProfilePage.xaml.cpp" />
+    <ClCompile Include="external\SampleConfiguration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -45,6 +46,7 @@
     <ClInclude Include="TrackDisplayPage.xaml.h" />
     <ClInclude Include="external\KEENIOSDK_CLIENT.h" />
     <ClInclude Include="UserProfilePage.xaml.h" />
+    <ClInclude Include="external\SampleConfiguration.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\LockScreenLogo.scale-200.png">

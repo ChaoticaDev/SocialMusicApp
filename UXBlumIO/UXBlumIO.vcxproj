@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="external\KEENIOSDK_CLIENT.h" />
     <ClInclude Include="external\JSON\cJSON.h" />
+    <ClInclude Include="external\SampleConfiguration.h" />
     <ClInclude Include="LoginPage.xaml.h">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </ClInclude>
@@ -253,6 +254,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="external\JSON\cJSON.cpp" />
+    <ClCompile Include="external\SampleConfiguration.cpp" />
     <ClCompile Include="LoginPage.xaml.cpp">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </ClCompile>
@@ -286,6 +288,11 @@
     <ClCompile Include="UserProfilePage.xaml.cpp">
       <DependentUpon>UserProfilePage.xaml</DependentUpon>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tasks\Tasks.vcxproj">
+      <Project>{191dc140-ab0d-48c5-8717-d2fa789385bf}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,6 +13,9 @@
 #include <sstream>
 #include <string>
 
+#include <ppltasks.h>
+using namespace concurrency;
+
 #define _StringFromAscIIChars(x) UberSnip::UTILS::STRING::StringFromAscIIChars(x)
 #define _String(x) UberSnip::UTILS::STRING::StringFromAscIIChars(x)
 #define _StringToAscIIChars(x) UberSnip::UTILS::STRING::StringToAscIIChars(x).c_str()
@@ -1084,6 +1087,7 @@ namespace UXBlumIO
 					this->error = true;
 					return;
 				}
+
 				for (cJSON* c_event = arr_events->child; c_event != nullptr; c_event = c_event->next) {
 					KEENIO_EVENT^ k_event = ref new KEENIO_EVENT();
 					k_event->Name = _String(cJSON_GetObjectItem(c_event, "name")->valuestring);
@@ -2101,7 +2105,7 @@ namespace UXBlumIO
 	[Windows::UI::Xaml::Data::Bindable]
 	public ref class GENERIC_ITEM sealed {
 	private:
-		Platform::String^ _title;
+		Platform::String^ _title = "";
 		Platform::String^ _description;
 		Windows::UI::Xaml::Media::ImageSource^ _Image;
 
@@ -2192,6 +2196,24 @@ namespace UXBlumIO
 
 	namespace UberSnip {
 		namespace HELPER {
+
+
+			public ref class ASYNC_RESPONSE sealed {
+				Platform::String^ _body;
+
+			public:
+				ASYNC_RESPONSE(){}
+
+				property Platform::String^ Body {
+					Platform::String^ get() {
+						return this->_body;
+					}
+
+					void set(Platform::String^ val) {
+						this->_body = val;
+					}
+				}
+			};
 
 			public ref class Accounts sealed{
 
